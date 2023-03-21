@@ -1,5 +1,9 @@
+const repository = "https://kdh379.github.io/LostArkProfile";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    // basePath: "/LostArkBoard",
+    // assetPrefix: process.env.NODE_ENV === "production" ? repository : "",
     reactStrictMode: true,
     typescript: {
         tsconfigPath: "tsconfig.json",
@@ -7,7 +11,6 @@ const nextConfig = {
     eslint: {
         ignoreDuringBuilds: true,
     },
-    basePath: "https://github.com/kdh379/LostArkProfile.git",
     pageExtensions: ["page.tsx", "page.ts"],
     webpack: (config) => {
         const rules = config.module.rules

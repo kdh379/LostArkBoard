@@ -2,11 +2,12 @@
     "name": "nextjs-intro",
     "version": "0.1.0",
     "private": true,
+    "homepage": "https://kdh379.github.io/LostArkProfile",
     "scripts": {
         "dev": "next dev",
         "build": "next build && next export",
         "predeploy": "pnpm run build",
-        "deploy": "touch out/.nojekyll && gh-pages -d out --dotfiles",
+        "next-deploy": "next build && next export && fsutil file createNew out/.nojekyll 0 && git add -f out/ && git commit -m 'deploy to gh-pages' && git subtree push --prefix out origin gh-pages",
         "start": "next start",
         "lint": "next lint"
     },
