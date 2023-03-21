@@ -6,8 +6,6 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build && next export",
-        "predeploy": "pnpm run build",
-        "next-deploy": "next build && next export && fsutil file createNew out/.nojekyll 0 && git add -f out/ && git commit -m 'deploy to gh-pages' && git subtree push --prefix out origin gh-pages",
         "start": "next start",
         "lint": "next lint"
     },
@@ -23,7 +21,6 @@
         "typescript": "4.9.5"
     },
     "devDependencies": {
-        "gh-pages": "^5.0.0",
         "sass": "^1.58.3"
     }
 }
