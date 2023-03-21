@@ -1,9 +1,6 @@
-const repository = "https://kdh379.github.io/LostArkProfile";
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // basePath: "/LostArkBoard",
-    // assetPrefix: process.env.NODE_ENV === "production" ? repository : "",
+    basePath: "/LostArkProfile",
     reactStrictMode: true,
     typescript: {
         tsconfigPath: "tsconfig.json",
