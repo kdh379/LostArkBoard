@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    basePath: "/LostArkProfile",
+    // basePath: "/LostArkProfile",
     reactStrictMode: true,
     typescript: {
         tsconfigPath: "tsconfig.json",
