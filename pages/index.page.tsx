@@ -1,29 +1,60 @@
 import { Helmet } from "@components/helmet";
-import NavBar from "@components/nav/nav-bar";
-import { useEffect, useState } from "react";
 
-const API_KEY = "f486fd3c7618221a9ddfe192d31a0e13";
+import { GetServerSideProps } from "next";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-const Home: React.FC<unknown> = () => {
-    const [movies, setMovies] = useState<any[]>([]);
+interface HomeProps {
+    results: MovieEntity[];
+}
 
-    useEffect(() => {
-        (async () => {
-            const { results } = await (await fetch("/api/movies")).json();
-            setMovies(results);
-        })();
-    }, []);
+interface MovieEntity {
+    id: string;
+    poster_path: string;
+    original_title: string;
+}
+
+const Home = ({ results }: HomeProps) => {
+    const router = useRouter();
+
+    const onClick = (movie: MovieEntity) => {
+        router.push(
+            {
+                pathname: `/movies/${movie.id}`,
+                query: {
+                    id: movie.id,
+                    title: movie.original_title,
+                },
+            },
+            `/movies/${movie.id}`
+        );
+    };
+
     return (
         <div className="container">
             <Helmet title="Home" />
-            {!movies && <h4>Loading...</h4>}
-            {movies.map((movie) => (
-                <div className="movie" key={movie.id}>
-                    <img
-                        src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                    ></img>
-                    <h4>{movie.original_title}</h4>
-                </div>
+            {results?.map((movie) => (
+                <Link
+                    href={{
+                        pathname: `/movies/${movie.id}`,
+                        query: {
+                            title: movie.original_title,
+                        },
+                    }}
+                    as={`/movies/${movie.id}`}
+                    key={movie.id}
+                >
+                    <div
+                        className="movie"
+                        key={movie.id}
+                        // onClick={() => onClick(movie)}
+                    >
+                        <img
+                            src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                        ></img>
+                        <h4>{movie.original_title}</h4>
+                    </div>
+                </Link>
             ))}
             <style jsx>{`
                 .container {
@@ -48,6 +79,17 @@ const Home: React.FC<unknown> = () => {
             `}</style>
         </div>
     );
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+    const { results } = await (
+        await fetch("http://localhost:3000/api/movies")
+    ).json();
+    return {
+        props: {
+            results,
+        },
+    };
 };
 
 export default Home;
