@@ -10,24 +10,11 @@ const nextConfig = {
         ignoreDuringBuilds: true,
     },
     pageExtensions: ["page.tsx", "page.ts"],
-    async redirects() {
-        return [
-            {
-                source: "/old-blog/:path*",
-                destination: "/new-blog/:path*",
-                permanent: false,
-            },
-        ];
-    },
     async rewrites() {
         return [
             {
-                source: "/api/movies",
-                destination: `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`,
-            },
-            {
-                source: "/api/movies/:id",
-                destination: `https://api.themoviedb.org/3/movie/:id?api_key=${API_KEY}`,
+                source: "/api/:path*",
+                destination: `https://developer-lostark.game.onstove.com/:path*`,
             },
         ];
     },

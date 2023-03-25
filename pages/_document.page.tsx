@@ -5,7 +5,7 @@ export default class AppDocument extends Document {
         return (
             <Html>
                 <Head>
-                    <link rel="icon" href="/calendar/img/favicon.png" />
+                    <link rel="icon" href="/public/favicon.png" />
                 </Head>
                 <body>
                     <Main />

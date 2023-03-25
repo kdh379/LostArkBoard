@@ -1,0 +1,38 @@
+// app-main
+// header의 크기만큼을 제외한 높이를 갖는다.
+.app-main {
+    @apply bg-default
+    text-gray-400
+    h-screen
+    max-h-screen
+    flex
+    flex-col
+    px-4
+    py-3;
+}
+
+.block {
+    @apply w-full
+    h-full;
+}
+
+.strong--1 {
+    @apply font-bold
+    text-4xl
+    text-gray-100
+    mb-2;
+}
+
+.strong--2 {
+    @apply font-bold
+    text-3xl
+    text-gray-100
+    mb-2;
+}
+
+.strong--base {
+    @apply font-bold
+    text-xl
+    text-gray-100
+    mb-2;
+}
