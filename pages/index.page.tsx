@@ -17,31 +17,12 @@ interface MovieEntity {
 const Home = ({ results }: HomeProps) => {
     const router = useRouter();
 
-    const onClick = (movie: MovieEntity) => {
-        router.push(
-            {
-                pathname: `/movies/${movie.id}`,
-                query: {
-                    id: movie.id,
-                    title: movie.original_title,
-                },
-            },
-            `/movies/${movie.id}`
-        );
-    };
-
     return (
         <div className="container">
             <Helmet title="Home" />
             {results?.map((movie) => (
                 <Link
-                    href={{
-                        pathname: `/movies/${movie.id}`,
-                        query: {
-                            title: movie.original_title,
-                        },
-                    }}
-                    as={`/movies/${movie.id}`}
+                    href={`/movies/${movie.original_title}/${movie.id}`}
                     key={movie.id}
                 >
                     <div
