@@ -9,6 +9,9 @@ const nextConfig = {
     eslint: {
         ignoreDuringBuilds: true,
     },
+    images: {
+        domains: ["cdn-lostark.game.onstove.com"],
+    },
     pageExtensions: ["page.tsx", "page.ts"],
     async rewrites() {
         return [

@@ -5,6 +5,7 @@ import type { AppProps } from "next/app";
 import "@styles/globals.scss";
 import Head from "next/head";
 import { Layout } from "@components/layout";
+import { ConfigProvider, theme } from "antd";
 
 const AppMain = ({ Component, pageProps }: AppProps) => {
     return (
@@ -23,11 +24,22 @@ const App = (props: AppProps) => {
                     content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0"
                 />
             </Head>
-            <div className="app">
-                <main className="app-main">
-                    <AppMain {...props} />
-                </main>
-            </div>
+            <ConfigProvider
+                theme={{
+                    algorithm: theme.darkAlgorithm,
+                    components: {
+                        App: {
+                            colorBgBase: "#181818",
+                        },
+                    },
+                }}
+            >
+                <div className="app">
+                    <main className="app-main">
+                        <AppMain {...props} />
+                    </main>
+                </div>
+            </ConfigProvider>
         </>
     );
 };

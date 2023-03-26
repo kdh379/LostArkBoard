@@ -1,5 +1,18 @@
 // app-main
 // header의 크기만큼을 제외한 높이를 갖는다.
+// light class가 적용되면 bg-white를 적용한다.
+
+html,
+body,
+#__next {
+    @apply h-full;
+}
+
+html {
+    @apply bg-default
+    text-gray-400;
+}
+
 .app-main {
     @apply bg-default
     text-gray-400
@@ -9,6 +22,11 @@
     flex-col
     px-4
     py-3;
+
+    &.light {
+        @apply bg-white
+        text-gray-800;
+    }
 }
 
 .block {

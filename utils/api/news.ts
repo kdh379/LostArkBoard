@@ -6,7 +6,7 @@ import axios from "axios";
 
 export const getNotices = async () => {
     try {
-        return await axios.get<NoticeType[]>(`/api/news/notices`, {
+        return await axios.get<NoticeEntities[]>(`/api/news/notices`, {
             headers: {
                 accept: "application/json",
                 Authorization: `Bearer ${process.env.NEXT_PUBLIC_LOA_API_KEY}`,

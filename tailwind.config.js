@@ -6,6 +6,7 @@ module.exports = {
         "./styles/**/*.{scss}",
         "./components/**/*.{html,js,ts,tsx,scss}",
     ],
+    lightMode: "class",
     theme: {
         extend: {
             fontFamily: {
@@ -13,6 +14,11 @@ module.exports = {
             },
             backgroundColor: {
                 default: "#181818",
+            },
+        },
+        color: {
+            light: {
+                DEFAULT: "#f5f5f5",
             },
         },
     },
