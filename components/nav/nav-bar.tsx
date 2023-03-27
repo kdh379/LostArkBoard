@@ -15,7 +15,7 @@ const NavBar = () => {
                 className="flex flex-col justify-center items-center h-full cursor-pointer"
                 onClick={handlerRedirectHome}
             >
-                <h1 className="strong--1">LoaBoard</h1>
+                <h1 className="strong--1">LoABoard</h1>
             </div>
             <div className="relative mt-2 rounded-md shadow-sm w-1/3 max-w-xl">
                 <Input.Search

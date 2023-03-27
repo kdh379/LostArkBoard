@@ -5,12 +5,14 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getContentsCalendar } from "utils/api/game-contents";
 import { getNotices } from "utils/api/news";
+import { getClosestEvent } from "utils/converter";
 
 const CALENDAR_CATEGORY_NAME = [
     "카오스게이트",
     "모험 섬",
     "유령선",
     "점령 이벤트",
+    "로웬",
 ];
 
 // 현재 시간을 ISO String으로 반환
@@ -33,25 +35,51 @@ export const Home = () => {
 
         const fetchContentsCalendar = async () => {
             const result = await getContentsCalendar();
+            const resultList: GameContentsType[] = [];
 
             if (!result) return;
 
-            result.data.forEach((items) => {
-                if (!CALENDAR_CATEGORY_NAME.includes(items.CategoryName))
-                    return;
+            result.data.forEach((data) => {
+                const draft = data.RewardItems.map((item) => ({
+                    ...item,
+                }));
 
-                setContentsCalendar((prev) => [
-                    ...prev,
-                    {
-                        CategoryName: items.CategoryName,
-                        Contents: items.RewardItems.map((item) => ({
-                            ContentsName: items.ContentsName,
-                            RewardItems: item.Name,
-                            StartTimes: item.StartTimes,
-                        })),
-                    },
-                ]);
+                const prev = resultList.find(
+                    (result) => result.CategoryName === data.CategoryName
+                );
+
+                if (prev) {
+                    // 이전 데이터보다 현재 데이터의 레벨이 높으면 기존 데이터를 초기화
+                    const isHigherLevel = prev.MinItemLevel < data.MinItemLevel;
+                    if (isHigherLevel) prev.ContentList = [];
+
+                    const prevContent = prev.ContentList.find(
+                        (prevContent) =>
+                            prevContent.ContentsName === data.ContentsName
+                    );
+
+                    if (prevContent) prevContent.RewardItems.concat(...draft);
+                    else
+                        prev.ContentList.push({
+                            ContentsName: data.ContentsName,
+                            StartTimes: data.StartTimes,
+                            RewardItems: [...draft],
+                        });
+                } else
+                    resultList.push({
+                        CategoryName: data.CategoryName,
+                        MinItemLevel: data.MinItemLevel,
+                        ContentList: [
+                            {
+                                ContentsName: data.ContentsName,
+                                StartTimes: data.StartTimes,
+                                RewardItems: [...draft],
+                            },
+                        ],
+                    });
             });
+
+            setContentsCalendar(resultList);
         };
 
         fetchNotices();
@@ -66,39 +94,39 @@ export const Home = () => {
         <>
             <Helmet title="로아보드" />
             <div className="flex flex-wrap gap-3 px-5 justify-center items-top max-h-full overflow-auto">
-                <div className="flex-1 w-full max-w-xl min-w-[400px]">
-                    <List
-                        header={<div className="strong--base">캘린더</div>}
-                        className="rounded-md shadow-md ring-1 ring-gray-800 ring-inset px-3"
-                        itemLayout="horizontal"
-                        dataSource={contentsCalendar}
-                        renderItem={(item) => {
-                            // return (
-                            //     item.StartTime >
-                            //         new Date(
-                            //             date.getTime() - timezoneOffSet
-                            //         ).toISOString() && (
-                            //         <List.Item>
-                            //             <List.Item.Meta
-                            //                 title={item.CategoryName}
-                            //                 description={item.StartTime}
-                            //             />
-                            //         </List.Item>
-                            //     )
-                            // );
-                            return (
-                                <List.Item>
-                                    <List.Item.Meta
-                                        title={`${item.CategoryName} ${[
-                                            item.Contents.flatMap(
-                                                (content) => content.RewardItems
-                                            ),
-                                        ]}`}
-                                    ></List.Item.Meta>
-                                </List.Item>
-                            );
-                        }}
-                    ></List>
+                <div className="flex-1 flex flex-col gap-3 w-full max-w-xl min-w-[400px]">
+                    {CALENDAR_CATEGORY_NAME.map((categoryName) => {
+                        const events = getClosestEvent(
+                            contentsCalendar,
+                            categoryName
+                        );
+
+                        if (!events.length) return null;
+
+                        return (
+                            <List
+                                key={categoryName}
+                                header={
+                                    <div className="strong--base">
+                                        {categoryName}
+                                    </div>
+                                }
+                                className="rounded-md shadow-md ring-1 ring-gray-800 ring-inset px-3"
+                                itemLayout="horizontal"
+                                dataSource={events}
+                                renderItem={(item) => {
+                                    return (
+                                        <List.Item>
+                                            <List.Item.Meta
+                                                title={`${item.ContentsName}`}
+                                                description={`${item.StartTime} ${item.RewardItems}`}
+                                            ></List.Item.Meta>
+                                        </List.Item>
+                                    );
+                                }}
+                            ></List>
+                        );
+                    })}
                 </div>
                 <div className="flex-1 max-w-xl min-w-[400px]">
                     <List

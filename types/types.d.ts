@@ -1,10 +1,17 @@
 interface GameContentsType {
     CategoryName: string;
-    Contents: ContentType[];
+    MinItemLevel: number;
+    ContentList: ContentType[];
 }
 
-declare type ContentType = {
+interface ContentType {
     ContentsName: string;
     StartTimes: string[];
-    RewardItems: string;
+    RewardItems: RewardItemEntities[];
+}
+
+declare type ClosestEventType = {
+    ContentsName: string;
+    StartTime: string;
+    RewardItems: string[];
 };
