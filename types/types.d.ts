@@ -11,7 +11,10 @@ interface ContentType {
 }
 
 declare type ClosestEventType = {
-    ContentsName: string;
+    CategoryName: string;
     StartTime: string;
-    RewardItems: string[];
+    ContentsList: {
+        ContentsName: string;
+        RewardItems: string[];
+    }[];
 };

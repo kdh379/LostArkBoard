@@ -1,4 +1,4 @@
-const API_KEY = process.env.API_KEY;
+const API_KEY = process.env.NEXT_PUBLIC_LOA_API_KEY;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -13,6 +13,19 @@ const nextConfig = {
         domains: ["cdn-lostark.game.onstove.com"],
     },
     pageExtensions: ["page.tsx", "page.ts"],
+    async headers() {
+        return [
+            {
+                source: "/api/:path*",
+                headers: [
+                    {
+                        key: "Authorization",
+                        value: "",
+                    },
+                ],
+            },
+        ];
+    },
     async rewrites() {
         return [
             {
