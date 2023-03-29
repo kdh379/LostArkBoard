@@ -1,21 +1,31 @@
-import { Card, List, Tag } from "antd";
+import { Button, Card, List, Tag } from "antd";
+
 import { useEffect, useState } from "react";
 import { getContentsCalendar } from "utils/api/game-contents";
-import { getClosestEvent, getItemKeyword } from "utils/converter";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import {
+    getClosestEvent,
+    getItemKeyword,
+    itemColor,
+} from "utils/script/contents-converter";
+import { dateFormat, timeFormat } from "utils/script/time-format";
 
 const CALENDAR_CATEGORY_NAME = [
+    "점령 이벤트",
     "카오스게이트",
+    "필드보스",
     "모험 섬",
     "유령선",
-    "점령 이벤트",
+    "로웬-툴루비크",
     "로웬-습격",
-    "필드보스",
 ];
 
 export const ContentsCalendar = () => {
     const [contentsCalendar, setContentsCalendar] = useState<
         GameContentsType[]
     >([]);
+
+    const [date, setDate] = useState(new Date());
 
     useEffect(() => {
         setContentsCalendar([]);
@@ -84,7 +94,16 @@ export const ContentsCalendar = () => {
     return (
         <div className="flex-1 flex flex-col gap-3 w-full max-w-xl min-w-[400px]">
             <Card
-                title="컨텐츠 일정"
+                title={
+                    <div className="flex justify-between items-center">
+                        <div>콘텐츠 달력</div>
+                        <div className="flex gap-3 items-center">
+                            <Button icon={<LeftOutlined />}></Button>
+                            {dateFormat(new Date())}
+                            <Button icon={<RightOutlined />}></Button>
+                        </div>
+                    </div>
+                }
                 bodyStyle={{ paddingTop: 0, paddingBottom: 0 }}
             >
                 {CALENDAR_CATEGORY_NAME.map((categoryName) => {
@@ -99,7 +118,9 @@ export const ContentsCalendar = () => {
                             header={
                                 <div className="flex justify-between strong--5">
                                     <div>{event.CategoryName}</div>
-                                    <div>{event.StartTime}</div>
+                                    <div>
+                                        {timeFormat(new Date(event.StartTime))}
+                                    </div>
                                 </div>
                             }
                             dataSource={event.ContentsList}
@@ -113,17 +134,20 @@ export const ContentsCalendar = () => {
                                                         {item.ContentsName}
                                                     </div>
                                                     <div>
-                                                        <Tag>
-                                                            {getItemKeyword(
-                                                                item
-                                                                    .RewardItems[
-                                                                    item
-                                                                        .RewardItems
-                                                                        .length -
-                                                                        1
-                                                                ]
-                                                            )}
-                                                        </Tag>
+                                                        {getItemKeyword(
+                                                            item.RewardItems
+                                                        ).map((keyword) => (
+                                                            <Tag
+                                                                key={keyword}
+                                                                color={
+                                                                    itemColor[
+                                                                        keyword
+                                                                    ]
+                                                                }
+                                                            >
+                                                                {keyword}
+                                                            </Tag>
+                                                        ))}
                                                     </div>
                                                 </div>
                                             }
