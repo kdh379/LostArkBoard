@@ -19,7 +19,7 @@ export const Notices = () => {
     };
 
     return (
-        <div className="flex-1 max-w-xl min-w-[400px]">
+        <div className="flex-1 min-w-[14rem]">
             <List
                 header={<div className="strong--base">공지사항</div>}
                 className="rounded-md shadow-md ring-1 ring-gray-800 ring-inset px-3"

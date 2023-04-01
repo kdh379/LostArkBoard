@@ -10,17 +10,17 @@ const NavBar = () => {
     };
 
     return (
-        <header className="flex flex-row justify-between items-center h-16 w-full px-4">
+        <header className="bg-transparent flex flex-row justify-between items-center w-full h-16 px-4">
             <div
-                className="flex flex-col justify-center items-center h-full cursor-pointer"
+                className="flex flex-col justify-center h-full cursor-pointer"
                 onClick={handlerRedirectHome}
             >
-                <h1 className="strong--1">LoABoard</h1>
+                <div className="mb-0 strong--1">LoABoard</div>
             </div>
-            <div className="relative mt-2 rounded-md shadow-sm w-1/3 max-w-xl">
+            <div className="px-3 flex-1 shadow-sm">
                 <Input.Search
+                    size="large"
                     placeholder="캐릭터 검색"
-                    className="bg-default"
                 ></Input.Search>
             </div>
         </header>

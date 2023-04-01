@@ -1,9 +1,15 @@
 @tailwind base;
-@tailwind components;
+// @tailwind components;
 @tailwind utilities;
 
 @import "@components/_index";
 @import "./app.module";
+
+@media screen and (max-width: 480px) {
+    body {
+        font-size: 12px;
+    }
+}
 
 body {
     @apply font-sans;

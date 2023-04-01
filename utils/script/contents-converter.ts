@@ -1,13 +1,7 @@
-const getTimeAsTimeZone = (date: Date) => {
-    const offsetMs = new Date().getTimezoneOffset() * 60 * 1000;
-    return date.getTime() - offsetMs;
-};
-
-const nowTime = getTimeAsTimeZone(new Date());
-
 export const getClosestEvent = (
     resultList: GameContentsType[],
-    CategoryName: string
+    CategoryName: string,
+    targetDate: Date
 ) => {
     let closestEvent: ClosestEventType[] = [];
 
@@ -19,48 +13,58 @@ export const getClosestEvent = (
 
     contentList.forEach((content) => {
         let minDiff = Infinity;
-        let closestTime = "";
+        let closestDateTime = "";
 
-        content.StartTimes.forEach((time) => {
-            if (getTimeAsTimeZone(new Date(time)) < nowTime) return;
+        content.StartTimes.forEach((dateTime) => {
+            if (new Date(dateTime).getTime() < new Date(targetDate).getTime())
+                return;
 
             const timeDiff = Math.abs(
-                getTimeAsTimeZone(new Date(time)) - nowTime
+                new Date(dateTime).getTime() - targetDate.getTime()
             );
 
             if (timeDiff < minDiff) {
                 minDiff = timeDiff;
-                closestTime = time;
+                closestDateTime = dateTime;
             }
         });
 
-        if (closestTime === "") return;
-
-        // closestTime 이 오늘이 아닐 경우 return
-        if (new Date(closestTime).getDate() !== new Date(nowTime).getDate())
+        // closestDateTime 이 targetDate 와 날짜가 다를 경우 다음 content 로 넘어간다.
+        if (new Date(closestDateTime).getDate() !== targetDate.getDate())
             return;
 
         // content.RewardList 배열 안에서
         // StartTimes 배열 안에 closestTime 과 동일한 값을 가진 RewardItem 을 찾아서 closestEvent 에 넣는다.
         const RewardItems: string[] = [];
         content.RewardItems.forEach((reward) => {
-            if (!reward.StartTimes || reward.StartTimes.includes(closestTime))
+            if (
+                !reward.StartTimes ||
+                reward.StartTimes.includes(closestDateTime)
+            )
                 RewardItems.push(reward.Name);
         });
 
         // closestEvent에 동일한 CategoryName 이 존재할 경우 ContentsList 에 추가한다.
         // closestEvent에 동일한 CategoryName 이 존재하지 않을 경우 새로운 객체를 생성하여 추가한다.
         const index = closestEvent.findIndex(
-            (event) => event.CategoryName === CategoryName
+            (event) =>
+                event.CategoryName === CategoryName &&
+                event.StartTime === closestDateTime
         );
+
+        const isClosed =
+            new Date(closestDateTime).getTime() < new Date().getTime();
+
         if (index === -1) {
             closestEvent.push({
                 CategoryName,
-                StartTime: closestTime,
+                StartTime: closestDateTime,
+                isClosed,
                 ContentsList: [
                     {
                         ContentsName: content.ContentsName,
                         RewardItems,
+                        isNextEvent: !isClosed,
                     },
                 ],
             });
@@ -69,9 +73,11 @@ export const getClosestEvent = (
             closestEvent[index].ContentsList.push({
                 ContentsName: content.ContentsName,
                 RewardItems,
+                isNextEvent: !isClosed,
             });
         }
     });
+    console.log("closestEvent", closestEvent);
 
     return closestEvent;
 };

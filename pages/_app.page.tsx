@@ -34,7 +34,7 @@ const App = (props: AppProps) => {
                     },
                 }}
             >
-                <div className="app">
+                <div className="app dark-mode">
                     <main className="app-main">
                         <AppMain {...props} />
                     </main>

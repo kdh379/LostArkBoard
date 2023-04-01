@@ -1,10 +1,10 @@
 interface GameContentsType {
     CategoryName: string;
     MinItemLevel: number;
-    ContentList: ContentType[];
+    ContentList: ContentsType[];
 }
 
-interface ContentType {
+interface ContentsType {
     ContentsName: string;
     StartTimes: string[];
     RewardItems: RewardItemEntities[];
@@ -13,8 +13,12 @@ interface ContentType {
 declare type ClosestEventType = {
     CategoryName: string;
     StartTime: string;
-    ContentsList: {
-        ContentsName: string;
-        RewardItems: string[];
-    }[];
+    isClosed: boolean;
+    ContentsList: ClosestContentsListType[];
+};
+
+declare type ClosestContentsListType = {
+    ContentsName: string;
+    isNextEvent: boolean;
+    RewardItems: string[];
 };
