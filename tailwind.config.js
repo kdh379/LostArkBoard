@@ -12,13 +12,13 @@ module.exports = {
             fontFamily: {
                 sans: ["Inter var", ...defaultTheme.fontFamily.sans],
             },
-            // backgroundColor: {
-            //     default: "#181818",
-            // },
-        },
-        color: {
-            light: {
-                DEFAULT: "#f5f5f5",
+            colors: {
+                background: {
+                    DEFAULT: "#090909",
+                },
+                surface: {
+                    DEFAULT: "#121212",
+                },
             },
         },
     },

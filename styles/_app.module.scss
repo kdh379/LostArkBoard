@@ -1,8 +1,5 @@
 // dark-mode 클래스를 사용하여 다크 모드를 지원합니다.
 .app {
-    @apply bg-[#090909]
-    text-white;
-
     &.dark-mode {
         @apply bg-[#090909]
         text-white;

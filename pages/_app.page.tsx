@@ -27,11 +27,6 @@ const App = (props: AppProps) => {
             <ConfigProvider
                 theme={{
                     algorithm: theme.darkAlgorithm,
-                    components: {
-                        App: {
-                            colorBgBase: "#181818",
-                        },
-                    },
                 }}
             >
                 <div className="app dark-mode">
