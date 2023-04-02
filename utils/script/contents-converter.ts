@@ -58,6 +58,7 @@ export const getClosestEvent = (
     targetDate: Date
 ) => {
     let closestEvent: ClosestEventType[] = [];
+    let isClosed = false;
 
     const contentList = resultList
         .find((result) => result.CategoryName === CategoryName)
@@ -70,8 +71,10 @@ export const getClosestEvent = (
         let closestDateTime = "";
 
         content.StartTimes.forEach((dateTime) => {
-            // if (new Date(dateTime).getTime() < new Date(targetDate).getTime())
-            //     return;
+            if (new Date(dateTime).getTime() < new Date(targetDate).getTime()) {
+                isClosed = true;
+                return;
+            }
 
             const timeDiff = Math.abs(
                 new Date(dateTime).getTime() - targetDate.getTime()
@@ -80,6 +83,7 @@ export const getClosestEvent = (
             if (timeDiff < minDiff) {
                 minDiff = timeDiff;
                 closestDateTime = dateTime;
+                isClosed = false;
             }
         });
 
@@ -106,8 +110,7 @@ export const getClosestEvent = (
                 event.StartTime === closestDateTime
         );
 
-        const isClosed =
-            new Date(closestDateTime).getTime() < new Date().getTime();
+        isClosed = new Date(closestDateTime).getTime() < new Date().getTime();
 
         if (index === -1) {
             closestEvent.push({

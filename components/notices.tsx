@@ -3,14 +3,60 @@ import { useEffect, useState } from "react";
 import { getNotices } from "utils/api/news";
 import useSWR from "swr";
 
+const getColor = (type: string) => {
+    switch (type) {
+        case "공지":
+            return "blue";
+        case "점검":
+            return "green";
+        case "이벤트":
+            return "yellow";
+        default:
+            return "";
+    }
+};
+
+interface NoticesListProps {
+    entities: NoticeEntities[];
+}
+
+const NoticesList = ({ entities }: NoticesListProps) => {
+    const handlerRedirectNotice = (notice: NoticeEntities) => {
+        window.open(notice.Link, "_blank");
+    };
+
+    return (
+        <List
+            itemLayout="horizontal"
+            dataSource={entities}
+            renderItem={(item) => (
+                <List.Item
+                    className="cursor-pointer opacity-75 hover:opacity-100"
+                    onClick={() => handlerRedirectNotice(item)}
+                >
+                    <List.Item.Meta
+                        title={<div>{item.Title}</div>}
+                        description={
+                            <div className="flex justify-between">
+                                <div>
+                                    <Tag color={getColor(item.Type)}>
+                                        {item.Type}
+                                    </Tag>
+                                    {item.Date}
+                                </div>
+                            </div>
+                        }
+                    />
+                </List.Item>
+            )}
+        ></List>
+    );
+};
+
 export const Notices = () => {
     // const [notices, setNotices] = useState<NoticeEntities[]>([]);
 
     const { data, error, isLoading } = useSWR("/api/news/notices", getNotices);
-
-    const handlerRedirectNotice = (notice: NoticeEntities) => {
-        window.open(notice.Link, "_blank");
-    };
 
     return (
         <div className="flex-1 min-w-[16rem]">
@@ -22,32 +68,7 @@ export const Notices = () => {
                 {isLoading || !data ? (
                     <Spin />
                 ) : (
-                    <List
-                        itemLayout="horizontal"
-                        dataSource={data.data.splice(0, 5)}
-                        renderItem={(item) => (
-                            <List.Item
-                                onClick={() => handlerRedirectNotice(item)}
-                                className="cursor-pointer opacity-75 hover:opacity-100"
-                            >
-                                <Tag
-                                    color={
-                                        item.Type === "공지"
-                                            ? "blue"
-                                            : item.Type === "점검"
-                                            ? "green"
-                                            : "red"
-                                    }
-                                >
-                                    {item.Type}
-                                </Tag>
-                                <List.Item.Meta
-                                    title={item.Title}
-                                    description={item.Date}
-                                />
-                            </List.Item>
-                        )}
-                    ></List>
+                    <NoticesList entities={data.data.splice(0, 5)} />
                 )}
             </Card>
         </div>
