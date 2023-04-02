@@ -31,6 +31,7 @@ const NoticesList = ({ entities }: NoticesListProps) => {
             dataSource={entities}
             renderItem={(item) => (
                 <List.Item
+                    key={item.Title}
                     className="cursor-pointer opacity-75 hover:opacity-100"
                     onClick={() => handlerRedirectNotice(item)}
                 >

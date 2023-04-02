@@ -134,7 +134,6 @@ export const getClosestEvent = (
             });
         }
     });
-    console.log("closestEvent", closestEvent);
 
     return closestEvent;
 };

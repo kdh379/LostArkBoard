@@ -31,7 +31,7 @@ const ContentsCalendarItem = (props: ClosestContentsListType) => {
     const { ContentsName, RewardItems, isNextEvent } = props;
 
     return (
-        <List.Item>
+        <List.Item key={ContentsName}>
             <List.Item.Meta
                 title={
                     // <div className="flex justify-between">
