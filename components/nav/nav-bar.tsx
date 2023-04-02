@@ -10,7 +10,7 @@ const NavBar = () => {
     };
 
     return (
-        <header className="bg-transparent flex flex-row justify-between items-center w-full h-16 px-4">
+        <header className="bg-transparent flex flex-row justify-between items-center w-full h-16 px-4 mb-3">
             <div
                 className="flex flex-col justify-center h-full cursor-pointer"
                 onClick={handlerRedirectHome}

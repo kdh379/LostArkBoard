@@ -3,20 +3,10 @@
 // 3. AxiosResponse<NoticeType[]> 를 사용하여 타입을 지정
 
 import axios from "axios";
+import { fetcherLoaAPI } from "./fetcher";
 
 export const getContentsCalendar = async () => {
-    try {
-        return await axios.get<GameContentsEntities[]>(
-            `/api/gamecontents/calendar`,
-            {
-                headers: {
-                    accept: "application/json",
-                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_LOA_API_KEY}`,
-                },
-                method: "GET",
-            }
-        );
-    } catch (error) {
-        console.error(error);
-    }
+    return await fetcherLoaAPI<GameContentsEntities[]>(
+        "/api/gamecontents/calendar"
+    );
 };

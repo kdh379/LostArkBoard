@@ -1,3 +1,57 @@
+export const convertContents = (entities: GameContentsEntities[]) => {
+    const resultList: GameContentsType[] = [];
+
+    entities.forEach((data) => {
+        const draft = data.RewardItems.map((item) => ({
+            ...item,
+        }));
+
+        if (data.CategoryName === "로웬") {
+            if (data.ContentsName.match("[습격]"))
+                data.CategoryName = "로웬-습격";
+            else data.CategoryName = "로웬-툴루비크";
+        }
+
+        const prev = resultList.find(
+            (result) => result.CategoryName === data.CategoryName
+        );
+
+        if (prev) {
+            // 이전 데이터보다 현재 데이터의 레벨이 높으면 기존 데이터를 초기화
+            const isHigherLevel = prev.MinItemLevel < data.MinItemLevel;
+            if (isHigherLevel) prev.ContentList = [];
+
+            // 로웬-습격은 레벨이 다르더라도 같은 데이터로 처리
+            if (data.CategoryName === "로웬-습격") return;
+
+            const prevContent = prev.ContentList.find(
+                (prevContent) => prevContent.ContentsName === data.ContentsName
+            );
+
+            if (prevContent) prevContent.RewardItems.concat(...draft);
+            else
+                prev.ContentList.push({
+                    ContentsName: data.ContentsName,
+                    StartTimes: data.StartTimes,
+                    RewardItems: [...draft],
+                });
+        } else
+            resultList.push({
+                CategoryName: data.CategoryName,
+                MinItemLevel: data.MinItemLevel,
+                ContentList: [
+                    {
+                        ContentsName: data.ContentsName,
+                        StartTimes: data.StartTimes,
+                        RewardItems: [...draft],
+                    },
+                ],
+            });
+    });
+
+    return resultList;
+};
+
 export const getClosestEvent = (
     resultList: GameContentsType[],
     CategoryName: string,
@@ -16,8 +70,8 @@ export const getClosestEvent = (
         let closestDateTime = "";
 
         content.StartTimes.forEach((dateTime) => {
-            if (new Date(dateTime).getTime() < new Date(targetDate).getTime())
-                return;
+            // if (new Date(dateTime).getTime() < new Date(targetDate).getTime())
+            //     return;
 
             const timeDiff = Math.abs(
                 new Date(dateTime).getTime() - targetDate.getTime()
