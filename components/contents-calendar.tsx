@@ -31,7 +31,16 @@ const ContentsCalendarItem = (props: ClosestContentsListType) => {
     const { ContentsName, RewardItems, isNextEvent } = props;
 
     return (
-        <List.Item key={ContentsName}>
+        <List.Item
+            style={{
+                paddingLeft: 12,
+                paddingRight: 0,
+                paddingTop: 4,
+                paddingBottom: 0,
+                border: "none",
+            }}
+            key={ContentsName}
+        >
             <List.Item.Meta
                 title={
                     // <div className="flex justify-between">
@@ -118,7 +127,7 @@ export const ContentsCalendar = () => {
     };
 
     return (
-        <div className="flex-1 flex flex-col px-3 gap-3 w-full">
+        <div className="flex-1 mx-3 my-2 flex flex-col gap-3 w-full">
             <Card
                 title={
                     <div className="flex justify-between items-center">
@@ -132,7 +141,7 @@ export const ContentsCalendar = () => {
                 }
                 bodyStyle={{
                     paddingTop: 0,
-                    paddingBottom: 0,
+                    paddingBottom: 12,
                 }}
             >
                 {isLoading || !data ? (
