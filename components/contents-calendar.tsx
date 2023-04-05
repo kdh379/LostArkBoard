@@ -118,12 +118,12 @@ export const ContentsCalendar = () => {
     };
 
     return (
-        <div className="flex-1 flex flex-col gap-3 w-full min-w-[17rem]">
+        <div className="flex-1 flex flex-col px-3 gap-3 w-full">
             <Card
                 title={
                     <div className="flex justify-between items-center">
                         <div>콘텐츠 달력</div>
-                        <div className="flex gap-3 items-center">
+                        <div className="flex gap-1 items-center">
                             <LeftOutlined onClick={handlerPrevDate} />
                             {dateFormat(targetDate)}
                             <RightOutlined onClick={handlerNextDate} />

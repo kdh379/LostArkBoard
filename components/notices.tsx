@@ -60,7 +60,7 @@ export const Notices = () => {
     const { data, error, isLoading } = useSWR("/api/news/notices", getNotices);
 
     return (
-        <div className="flex-1 min-w-[16rem]">
+        <div className="flex-1 mx-3">
             <Card
                 size="small"
                 title={<div className="strong--5 py-4">공지사항</div>}

@@ -6,7 +6,7 @@ export const Home = () => {
     return (
         <>
             <Helmet title="로아보드" />
-            <div className="flex flex-wrap gap-3 px-5 justify-center items-top max-h-full overflow-auto">
+            <div className="flex flex-wrap justify-center items-top overflow-auto my-2">
                 <ContentsCalendar></ContentsCalendar>
                 <Notices></Notices>
             </div>

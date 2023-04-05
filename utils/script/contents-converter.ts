@@ -73,7 +73,6 @@ export const getClosestEvent = (
         content.StartTimes.forEach((dateTime) => {
             if (new Date(dateTime).getTime() < new Date(targetDate).getTime()) {
                 isClosed = true;
-                return;
             }
 
             const timeDiff = Math.abs(
@@ -87,6 +86,7 @@ export const getClosestEvent = (
             }
         });
 
+        CategoryName === "모험 섬" && console.log(closestDateTime);
         // closestDateTime 이 targetDate 와 날짜가 다를 경우 다음 content 로 넘어간다.
         if (new Date(closestDateTime).getDate() !== targetDate.getDate())
             return;
