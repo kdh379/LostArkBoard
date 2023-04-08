@@ -71,7 +71,7 @@ export const Notices = () => {
     const { data, error, isLoading } = useSWR("/api/news/notices", getNotices);
 
     return (
-        <div className="flex-1">
+        <div className="flex-1 px-3">
             <Card
                 className="bg-surface"
                 bordered={false}

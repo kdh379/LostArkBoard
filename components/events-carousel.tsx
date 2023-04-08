@@ -11,7 +11,7 @@ export const EventsCarousel = () => {
     };
 
     return (
-        <Carousel autoplay>
+        <Carousel className="px-3" autoplay>
             {data?.data.map((item) => (
                 <div
                     key={item.Title}
@@ -21,9 +21,9 @@ export const EventsCarousel = () => {
                     <Image
                         src={item.Thumbnail}
                         alt={item.Title}
-                        width={500}
+                        width={640}
                         height={160}
-                        className="lg:rounded-xl"
+                        className="rounded-lg"
                     />
                 </div>
             ))}
