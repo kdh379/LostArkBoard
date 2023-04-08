@@ -1,5 +1,4 @@
 import { Card, List, Spin, Tag } from "antd";
-import { useEffect, useState } from "react";
 import { getNotices } from "utils/api/news";
 import useSWR from "swr";
 
@@ -14,6 +13,17 @@ const getColor = (type: string) => {
         default:
             return "";
     }
+};
+
+// 날짜 포맷을 변경하는 함수
+// Intl.DateTimeFormat()을 사용하여 구현
+const getDateString = (date: string) => {
+    const dateObj = new Date(date);
+    return Intl.DateTimeFormat("ko-KR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    }).format(dateObj);
 };
 
 interface NoticesListProps {
@@ -32,18 +42,19 @@ const NoticesList = ({ entities }: NoticesListProps) => {
             renderItem={(item) => (
                 <List.Item
                     key={item.Title}
-                    className="cursor-pointer opacity-75 hover:opacity-100"
+                    className="cursor-pointer transition duration-500 ease-in-out hover:bg-active"
                     onClick={() => handlerRedirectNotice(item)}
                 >
                     <List.Item.Meta
-                        title={<div>{item.Title}</div>}
+                        className="px-4"
+                        title={<div className="ellipsis">{item.Title}</div>}
                         description={
                             <div className="flex justify-between">
                                 <div>
                                     <Tag color={getColor(item.Type)}>
                                         {item.Type}
                                     </Tag>
-                                    {item.Date}
+                                    {getDateString(item.Date)}
                                 </div>
                             </div>
                         }
@@ -60,17 +71,20 @@ export const Notices = () => {
     const { data, error, isLoading } = useSWR("/api/news/notices", getNotices);
 
     return (
-        <div className="flex-1 mx-3 my-2">
+        <div className="flex-1">
             <Card
+                className="bg-surface"
+                bordered={false}
                 size="small"
-                title={<div className="strong--5 py-4">공지사항</div>}
-                bodyStyle={{ paddingTop: 0, paddingBottom: 0 }}
+                title={
+                    <div className="flex justify-between">
+                        <div className="strong--5 py-4">공지사항</div>
+                        {isLoading && <Spin />}
+                    </div>
+                }
+                bodyStyle={{ padding: 0 }}
             >
-                {isLoading || !data ? (
-                    <Spin />
-                ) : (
-                    <NoticesList entities={data.data.splice(0, 5)} />
-                )}
+                {data && <NoticesList entities={data.data.splice(0, 5)} />}
             </Card>
         </div>
     );
