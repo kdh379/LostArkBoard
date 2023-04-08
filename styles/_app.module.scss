@@ -1,7 +1,7 @@
 // dark-mode 클래스를 사용하여 다크 모드를 지원합니다.
 .app {
     &.dark-mode {
-        @apply bg-[#090909]
+        @apply bg-background
         text-white;
     }
 }
@@ -50,4 +50,10 @@
 .strong--base {
     @apply font-bold
     text-xl;
+}
+
+.ellipsis {
+    @apply overflow-hidden
+    whitespace-nowrap
+    overflow-ellipsis;
 }
