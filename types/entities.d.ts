@@ -5,6 +5,15 @@ declare type NoticeEntities = {
     Type: string;
 };
 
+declare type EventEntities = {
+    Title: string;
+    Thumbnail: string;
+    Link: string;
+    StartDate: string;
+    EndDate: string;
+    RewardDate: string;
+};
+
 interface GameContentsEntities {
     CategoryName: string;
     ContentsName: string;
