@@ -14,10 +14,13 @@ module.exports = {
             },
             colors: {
                 background: {
-                    DEFAULT: "#090909",
+                    DEFAULT: "#0d0d0d",
                 },
                 surface: {
-                    DEFAULT: "#121212",
+                    DEFAULT: "#1e1e1e",
+                },
+                active: {
+                    DEFAULT: "#2e2e2e",
                 },
             },
         },

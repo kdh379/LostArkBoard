@@ -51,11 +51,13 @@ const ContentsCalendarItem = (props: ClosestContentsListType) => {
                     >
                         <div>{ContentsName}</div>
                         <div>
-                            {getItemKeyword(RewardItems).map((keyword) => (
-                                <Tag key={keyword} color={itemColor[keyword]}>
-                                    {keyword}
-                                </Tag>
-                            ))}
+                            {getItemKeyword(RewardItems).map(
+                                (keyword, index) => (
+                                    <Tag key={index} color={itemColor[keyword]}>
+                                        {keyword}
+                                    </Tag>
+                                )
+                            )}
                         </div>
                     </div>
                 }
@@ -98,11 +100,29 @@ export const ContentsCalendar = () => {
     //     GameContentsType[]
     // >([]);
     const [targetDate, setTargetDate] = useState(new Date());
+    const [closestEvent, setClosestEvent] = useState<ClosestEventType[]>([]);
 
     const { data, isLoading } = useSWR(
         "contents-calendar",
         getContentsCalendar
     );
+
+    useEffect(() => {
+        if (!data) return;
+
+        const events = getClosestEvent(convertContents(data.data), targetDate);
+
+        // events가 없을 경우 targetDate를 다음날로 변경
+        if (events.length === 0) {
+            const nextDate = new Date(targetDate);
+            nextDate.setDate(nextDate.getDate() + 1);
+            nextDate.setHours(0, 0, 0, 0);
+
+            return setTargetDate(nextDate);
+        }
+
+        setClosestEvent(events);
+    }, [data, targetDate]);
 
     const handlerPrevDate = () => {
         const prevDate = new Date(targetDate);
@@ -127,41 +147,35 @@ export const ContentsCalendar = () => {
     };
 
     return (
-        <div className="flex-1 mx-3 my-2 flex flex-col gap-3 w-full">
+        <div className="flex-1 flex flex-col gap-3 w-full">
             <Card
+                className="bg-surface"
+                bordered={false}
                 title={
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center bg-surface">
                         <div>콘텐츠 달력</div>
-                        <div className="flex gap-1 items-center">
-                            <LeftOutlined onClick={handlerPrevDate} />
-                            {dateFormat(targetDate)}
-                            <RightOutlined onClick={handlerNextDate} />
-                        </div>
+                        {isLoading ? (
+                            <Spin size="small" />
+                        ) : (
+                            <div className="flex gap-1 items-center">
+                                <LeftOutlined onClick={handlerPrevDate} />
+                                {dateFormat(targetDate)}
+                                <RightOutlined onClick={handlerNextDate} />
+                            </div>
+                        )}
                     </div>
                 }
                 bodyStyle={{
                     paddingTop: 0,
-                    paddingBottom: 12,
                 }}
             >
-                {isLoading || !data ? (
-                    <Spin />
-                ) : (
-                    CALENDAR_CATEGORY_NAME.map((categoryName) => {
-                        const events = getClosestEvent(
-                            convertContents(data.data),
-                            categoryName,
-                            targetDate
-                        );
-
-                        return events.map((event) => (
-                            <ContentsCalendarTitle
-                                key={`${event.CategoryName} ${event.StartTime}`}
-                                {...event}
-                            />
-                        ));
-                    })
-                )}
+                {data &&
+                    closestEvent.map((event) => (
+                        <ContentsCalendarTitle
+                            key={`${event.CategoryName} + ${event.StartTime}`}
+                            {...event}
+                        />
+                    ))}
             </Card>
         </div>
     );

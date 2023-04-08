@@ -52,87 +52,109 @@ export const convertContents = (entities: GameContentsEntities[]) => {
     return resultList;
 };
 
+const CALENDAR_CATEGORY_NAME = [
+    "점령 이벤트",
+    "카오스게이트",
+    "유령선",
+    "필드보스",
+    "모험 섬",
+    "로웬-툴루비크",
+    "로웬-습격",
+];
+
 export const getClosestEvent = (
     resultList: GameContentsType[],
-    CategoryName: string,
     targetDate: Date
 ) => {
     let closestEvent: ClosestEventType[] = [];
     let isClosed = false;
 
-    const contentList = resultList
-        .find((result) => result.CategoryName === CategoryName)
-        ?.ContentList.flatMap((content) => content);
+    CALENDAR_CATEGORY_NAME.forEach((CategoryName) => {
+        const contentList = resultList
+            .find((result) => result.CategoryName === CategoryName)
+            ?.ContentList.flatMap((content) => content);
 
-    if (!contentList) return closestEvent;
+        if (!contentList) return closestEvent;
 
-    contentList.forEach((content) => {
-        let minDiff = Infinity;
-        let closestDateTime = "";
+        contentList.forEach((content) => {
+            let minDiff = Infinity;
+            let closestDateTime = "";
 
-        content.StartTimes.forEach((dateTime) => {
-            if (new Date(dateTime).getTime() < new Date(targetDate).getTime()) {
-                isClosed = true;
-            }
+            content.StartTimes.forEach((dateTime) => {
+                if (
+                    new Date(dateTime).getTime() <
+                    new Date(targetDate).getTime()
+                ) {
+                    isClosed = true;
 
-            const timeDiff = Math.abs(
-                new Date(dateTime).getTime() - targetDate.getTime()
+                    const sameDate = content.StartTimes.filter(
+                        (time) => dateTime.split("T")[0] === time.split("T")[0]
+                    );
+
+                    if (dateTime !== sameDate[sameDate.length - 1]) return;
+
+                    // return;
+                }
+
+                const timeDiff = Math.abs(
+                    new Date(dateTime).getTime() - targetDate.getTime()
+                );
+
+                if (timeDiff < minDiff) {
+                    minDiff = timeDiff;
+                    closestDateTime = dateTime;
+                    isClosed = false;
+                }
+            });
+
+            // closestDateTime 이 targetDate 와 날짜가 다를 경우 다음 content 로 넘어간다.
+            if (new Date(closestDateTime).getDate() !== targetDate.getDate())
+                return;
+
+            // content.RewardList 배열 안에서
+            // StartTimes 배열 안에 closestTime 과 동일한 값을 가진 RewardItem 을 찾아서 closestEvent 에 넣는다.
+            const RewardItems: string[] = [];
+            content.RewardItems.forEach((reward) => {
+                if (
+                    !reward.StartTimes ||
+                    reward.StartTimes.includes(closestDateTime)
+                )
+                    RewardItems.push(reward.Name);
+            });
+
+            // closestEvent에 동일한 CategoryName 이 존재할 경우 ContentsList 에 추가한다.
+            // closestEvent에 동일한 CategoryName 이 존재하지 않을 경우 새로운 객체를 생성하여 추가한다.
+            const index = closestEvent.findIndex(
+                (event) =>
+                    event.CategoryName === CategoryName &&
+                    event.StartTime === closestDateTime
             );
 
-            if (timeDiff < minDiff) {
-                minDiff = timeDiff;
-                closestDateTime = dateTime;
-                isClosed = false;
+            isClosed =
+                new Date(closestDateTime).getTime() < new Date().getTime();
+
+            if (index === -1) {
+                closestEvent.push({
+                    CategoryName,
+                    StartTime: closestDateTime,
+                    isClosed,
+                    ContentsList: [
+                        {
+                            ContentsName: content.ContentsName,
+                            RewardItems,
+                            isNextEvent: !isClosed,
+                        },
+                    ],
+                });
+            }
+            if (index !== -1) {
+                closestEvent[index].ContentsList.push({
+                    ContentsName: content.ContentsName,
+                    RewardItems,
+                    isNextEvent: !isClosed,
+                });
             }
         });
-
-        CategoryName === "모험 섬" && console.log(closestDateTime);
-        // closestDateTime 이 targetDate 와 날짜가 다를 경우 다음 content 로 넘어간다.
-        if (new Date(closestDateTime).getDate() !== targetDate.getDate())
-            return;
-
-        // content.RewardList 배열 안에서
-        // StartTimes 배열 안에 closestTime 과 동일한 값을 가진 RewardItem 을 찾아서 closestEvent 에 넣는다.
-        const RewardItems: string[] = [];
-        content.RewardItems.forEach((reward) => {
-            if (
-                !reward.StartTimes ||
-                reward.StartTimes.includes(closestDateTime)
-            )
-                RewardItems.push(reward.Name);
-        });
-
-        // closestEvent에 동일한 CategoryName 이 존재할 경우 ContentsList 에 추가한다.
-        // closestEvent에 동일한 CategoryName 이 존재하지 않을 경우 새로운 객체를 생성하여 추가한다.
-        const index = closestEvent.findIndex(
-            (event) =>
-                event.CategoryName === CategoryName &&
-                event.StartTime === closestDateTime
-        );
-
-        isClosed = new Date(closestDateTime).getTime() < new Date().getTime();
-
-        if (index === -1) {
-            closestEvent.push({
-                CategoryName,
-                StartTime: closestDateTime,
-                isClosed,
-                ContentsList: [
-                    {
-                        ContentsName: content.ContentsName,
-                        RewardItems,
-                        isNextEvent: !isClosed,
-                    },
-                ],
-            });
-        }
-        if (index !== -1) {
-            closestEvent[index].ContentsList.push({
-                ContentsName: content.ContentsName,
-                RewardItems,
-                isNextEvent: !isClosed,
-            });
-        }
     });
 
     return closestEvent;
