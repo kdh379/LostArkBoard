@@ -147,7 +147,7 @@ export const ContentsCalendar = () => {
     };
 
     return (
-        <div className="flex-1 px-3 flex flex-col gap-3 w-full">
+        <div className="flex-1 px-3 py-2 flex flex-col gap-3 w-full">
             <Card
                 className="bg-surface"
                 bordered={false}

@@ -1,6 +1,8 @@
 import { Card, List, Spin, Tag } from "antd";
 import { getNotices } from "utils/api/news";
 import useSWR from "swr";
+import { useEffect, useState } from "react";
+import { MoreOutlined } from "@ant-design/icons";
 
 const getColor = (type: string) => {
     switch (type) {
@@ -66,12 +68,25 @@ const NoticesList = ({ entities }: NoticesListProps) => {
 };
 
 export const Notices = () => {
-    // const [notices, setNotices] = useState<NoticeEntities[]>([]);
+    const [notices, setNotices] = useState<NoticeEntities[]>([]);
 
     const { data, error, isLoading } = useSWR("/api/news/notices", getNotices);
 
+    const handlerRedirectNoticeList = () => {
+        window.open(
+            "https://lostark.game.onstove.com/News/Notice/List",
+            "_blank"
+        );
+    };
+
+    useEffect(() => {
+        if (data) {
+            setNotices(data.data.splice(0, 5));
+        }
+    }, [data]);
+
     return (
-        <div className="flex-1 px-3">
+        <div className="flex-1 px-3 py-2">
             <Card
                 className="bg-surface"
                 bordered={false}
@@ -79,12 +94,20 @@ export const Notices = () => {
                 title={
                     <div className="flex justify-between">
                         <div className="strong--5 py-4">공지사항</div>
-                        {isLoading && <Spin />}
+                        {isLoading ? (
+                            <Spin />
+                        ) : (
+                            <MoreOutlined
+                                rotate={90}
+                                title="더보기"
+                                onClick={handlerRedirectNoticeList}
+                            />
+                        )}
                     </div>
                 }
                 bodyStyle={{ padding: 0 }}
             >
-                {data && <NoticesList entities={data.data.splice(0, 5)} />}
+                {data && <NoticesList entities={notices} />}
             </Card>
         </div>
     );

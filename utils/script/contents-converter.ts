@@ -74,7 +74,7 @@ export const getClosestEvent = (
             .find((result) => result.CategoryName === CategoryName)
             ?.ContentList.flatMap((content) => content);
 
-        if (!contentList) return closestEvent;
+        if (!contentList) return;
 
         contentList.forEach((content) => {
             let minDiff = Infinity;
@@ -86,14 +86,7 @@ export const getClosestEvent = (
                     new Date(targetDate).getTime()
                 ) {
                     isClosed = true;
-
-                    const sameDate = content.StartTimes.filter(
-                        (time) => dateTime.split("T")[0] === time.split("T")[0]
-                    );
-
-                    if (dateTime !== sameDate[sameDate.length - 1]) return;
-
-                    // return;
+                    return;
                 }
 
                 const timeDiff = Math.abs(

@@ -8,7 +8,7 @@ export const Home = () => {
         <>
             <Helmet title="로아보드" />
             <div className="grid sm:grid-cols-2 grid-cols-1">
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col">
                     <EventsCarousel></EventsCarousel>
                     <ContentsCalendar></ContentsCalendar>
                 </div>

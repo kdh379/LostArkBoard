@@ -11,7 +11,7 @@ export const EventsCarousel = () => {
     };
 
     return (
-        <Carousel className="px-3" autoplay>
+        <Carousel className="px-3 py-2" autoplay>
             {data?.data.map((item) => (
                 <div
                     key={item.Title}
