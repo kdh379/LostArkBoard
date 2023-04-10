@@ -29,7 +29,7 @@ const NavBar = () => {
     };
 
     return (
-        <header className="flex flex-row justify-between items-center h-16 my-2">
+        <header className="flex flex-row justify-between items-center my-3">
             <div
                 className="lg:flex hidden flex-col mx-3 justify-center h-full cursor-pointer"
                 onClick={handlerRedirectHome}
@@ -40,7 +40,6 @@ const NavBar = () => {
                 <form onSubmit={(e) => handlerSearchCharacter(e)}>
                     <Search
                         className="bg-surface font-bold"
-                        size="large"
                         placeholder="캐릭터 검색"
                         value={characterName}
                         onChange={handlerCharacterNameChange}

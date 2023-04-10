@@ -1,0 +1,9 @@
+.character-image {
+    @apply absolute
+        w-96
+        h-72
+        overflow-hidden
+        top-0
+        right-[-60px]
+        z-10;
+}

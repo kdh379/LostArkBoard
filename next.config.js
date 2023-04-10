@@ -10,7 +10,7 @@ const nextConfig = {
         ignoreDuringBuilds: true,
     },
     images: {
-        domains: ["cdn-lostark.game.onstove.com"],
+        domains: ["cdn-lostark.game.onstove.com", "img.lostark.co.kr"],
     },
     pageExtensions: ["page.tsx", "page.ts"],
     async headers() {

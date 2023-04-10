@@ -4,3 +4,10 @@
 
 @import "@components/_index";
 @import "./app.module";
+
+// 모바일 환경일 경우 font size를 10px로 변경
+@media (max-width: 640px) {
+    html {
+        @apply text-xs;
+    }
+}

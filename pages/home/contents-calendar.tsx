@@ -112,15 +112,6 @@ export const ContentsCalendar = () => {
 
         const events = getClosestEvent(convertContents(data.data), targetDate);
 
-        // events가 없을 경우 targetDate를 다음날로 변경
-        if (events.length === 0) {
-            const nextDate = new Date(targetDate);
-            nextDate.setDate(nextDate.getDate() + 1);
-            nextDate.setHours(0, 0, 0, 0);
-
-            return setTargetDate(nextDate);
-        }
-
         setClosestEvent(events);
     }, [data, targetDate]);
 

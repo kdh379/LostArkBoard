@@ -1,9 +1,9 @@
-import { getEvents } from "utils/api/news";
 import { Carousel } from "antd";
-import useSWR from "swr";
 import Image from "next/image";
+import useSWR from "swr";
+import { getEvents } from "utils/api/news";
 
-export const EventsCarousel = () => {
+export function EventsCarousel() {
     const { data, error, isLoading } = useSWR("/api/news/events", getEvents);
 
     const handlerRedirect = (link: string) => {
@@ -29,4 +29,4 @@ export const EventsCarousel = () => {
             ))}
         </Carousel>
     );
-};
+}

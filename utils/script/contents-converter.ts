@@ -81,22 +81,25 @@ export const getClosestEvent = (
             let closestDateTime = "";
 
             content.StartTimes.forEach((dateTime) => {
+                // dateTime이 targetDate 날짜와 다를 경우 return
+                if (new Date(dateTime).getDate() !== targetDate.getDate())
+                    return;
+
                 if (
                     new Date(dateTime).getTime() <
                     new Date(targetDate).getTime()
-                ) {
+                )
                     isClosed = true;
-                    return;
-                }
+                else {
+                    const timeDiff = Math.abs(
+                        new Date(dateTime).getTime() - targetDate.getTime()
+                    );
 
-                const timeDiff = Math.abs(
-                    new Date(dateTime).getTime() - targetDate.getTime()
-                );
-
-                if (timeDiff < minDiff) {
-                    minDiff = timeDiff;
-                    closestDateTime = dateTime;
-                    isClosed = false;
+                    if (timeDiff < minDiff) {
+                        minDiff = timeDiff;
+                        closestDateTime = dateTime;
+                        isClosed = false;
+                    }
                 }
             });
 

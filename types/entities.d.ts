@@ -30,3 +30,39 @@ declare type RewardItemEntities = {
     Grade: string;
     StartTimes: string[];
 };
+
+declare type User = {
+    CharacterImage: string;
+    ExpeditionLevel: number;
+    PvpGradeName: string;
+    TownLevel: number;
+    TownName: string;
+    Title: string;
+    GuildMemberGrade: string;
+    GuildName: string;
+    ServerName: string;
+    CharacterName: string;
+    CharacterLevel: number;
+    CharacterClassName: string;
+    ItemAvgLevel: number;
+    ItemMaxLevel: number;
+};
+
+interface ProfilesEntity extends User {
+    UsingSkillPoint: string;
+    TotalSkillPoint: string;
+    Stats: StatEntity[];
+    Tendencies: TendenciesEntity[];
+}
+
+declare type StatEntity = {
+    Type: string;
+    Value: string;
+    Tooltip: string[];
+};
+
+declare type TendenciesEntity = {
+    Type: string;
+    Point: number;
+    MaxPoint: number;
+};
