@@ -31,7 +31,7 @@ export function Profile(props: ProfilesProps) {
     ];
 
     const EXTRA_INFO_LIST = [
-        { name: "원정대", value: ExpeditionLevel },
+        { name: "원정대", value: `Lv.${ExpeditionLevel}` },
         { name: "PVP", value: PvpGradeName },
         { name: "길드", value: GuildName },
         { name: "영지", value: `Lv.${TownLevel} ${TownName}` },
