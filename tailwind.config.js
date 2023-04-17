@@ -22,6 +22,27 @@ module.exports = {
                 active: {
                     DEFAULT: "#2e3338",
                 },
+                itemGrade1: {
+                    DEFAULT: "#8df901",
+                },
+                itemGrade2: {
+                    DEFAULT: "#00b0fa;",
+                },
+                itemGrade3: {
+                    DEFAULT: "#ba00f9",
+                },
+                itemGrade4: {
+                    DEFAULT: "#f9a100",
+                },
+                itemGrade5: {
+                    DEFAULT: "#fa5d00",
+                },
+                itemGrade6: {
+                    DEFAULT: "#ddc29d",
+                },
+                itemGrade7: {
+                    DEFAULT: "#3cf2e6",
+                },
             },
         },
     },
