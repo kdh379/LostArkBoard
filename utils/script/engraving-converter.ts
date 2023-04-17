@@ -9,7 +9,7 @@ const engravingIcon = {
     절정: "https://cdn-lostark.game.onstove.com/EFUI_IconAtlas/Ability/Ability_207.png",
 };
 
-const convertEngraving = (
+export const convertEngraving = (
     engraving: ArmoryEngravingEntity
 ): EngravingType[] => {
     const { Effects } = engraving;
