@@ -2,9 +2,9 @@
 import { fetcherLoaAPI } from "./fetcher";
 
 export const getNotices = async () => {
-    return await fetcherLoaAPI<NoticeEntities[]>("/api/news/notices");
+    return await fetcherLoaAPI<NoticeEntities[]>("/api/news/notices", "client");
 };
 
 export const getEvents = async () => {
-    return await fetcherLoaAPI<EventEntities[]>("/api/news/events");
+    return await fetcherLoaAPI<EventEntities[]>("/api/news/events", "client");
 };

@@ -6,6 +6,7 @@ import { fetcherLoaAPI } from "./fetcher";
 
 export const getContentsCalendar = async () => {
     return await fetcherLoaAPI<GameContentsEntities[]>(
-        "/api/gamecontents/calendar"
+        "/api/gamecontents/calendar",
+        "client"
     );
 };
