@@ -7,6 +7,15 @@ module.exports = {
         "./components/**/*.{html,js,ts,tsx,scss}",
     ],
     lightMode: "class",
+    safeList: [
+        "text-itemGrade1",
+        "text-itemGrade2",
+        "text-itemGrade3",
+        "text-itemGrade4",
+        "text-itemGrade5",
+        "text-itemGrade6",
+        "text-itemGrade7",
+    ],
     theme: {
         extend: {
             fontFamily: {
