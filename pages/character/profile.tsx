@@ -37,7 +37,7 @@ export function Profile() {
 
     // Image 확대
     return (
-        <div className="flex relative h-72">
+        <div className="flex relative h-72 overflow-x-clip">
             <div className="flex flex-col gap-3 z-20 my-2">
                 <div className="flex">
                     {HEADER_INFO_LIST.map((info, index) => (
