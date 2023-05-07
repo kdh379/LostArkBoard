@@ -1,0 +1,33 @@
+.armor__icon {
+    @apply rounded-md
+        bg-gradient-to-br
+        from-[#3d3325];
+
+    &--7 {
+        @apply to-itemGrade7;
+    }
+
+    &--6 {
+        @apply to-itemGrade6;
+    }
+
+    &--5 {
+        @apply to-itemGrade5;
+    }
+
+    &--4 {
+        @apply to-itemGrade4;
+    }
+
+    &--3 {
+        @apply to-itemGrade3;
+    }
+
+    &--2 {
+        @apply to-itemGrade2;
+    }
+
+    &--1 {
+        @apply to-itemGrade1;
+    }
+}

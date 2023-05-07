@@ -1,27 +1,54 @@
-import { Card, Empty, Spin, Tabs } from "antd";
+import { Empty, Tabs } from "antd";
 import { useRouter } from "next/router";
-import useSWR from "swr";
 import { getArmories } from "utils/api/armories";
 import { Profile } from "./profile";
 import { Armories } from "./armories";
+import { useSetRecoilState } from "recoil";
+import { useEffect } from "react";
+import { GetServerSidePropsContext } from "next";
 
-export function CharacterPage() {
+import {
+    avatarAtom,
+    engravingAtom,
+    equipmentAtom,
+    profileAtom,
+    skillsAtom,
+} from "./character.atom";
+
+interface CharacterPageProps {
+    armories: ArmoriesEntity;
+}
+
+export function CharacterPage(props: CharacterPageProps) {
+    const { armories } = props;
+
     const router = useRouter();
     const { characterName } = router.query;
 
-    const { data, isLoading, error } = useSWR(
-        `/api/armories/characters/${characterName}`,
-        getArmories
-    );
+    const setProfile = useSetRecoilState(profileAtom);
+    const setEquipment = useSetRecoilState(equipmentAtom);
+    const setAvatars = useSetRecoilState(avatarAtom);
+    const setSkills = useSetRecoilState(skillsAtom);
+    const setEngraving = useSetRecoilState(engravingAtom);
 
-    if (isLoading && !data)
-        return (
-            <div className="flex h-full justify-center items-center">
-                <Spin size="large"></Spin>
-            </div>
-        );
+    useEffect(() => {
+        if (!armories) return;
 
-    if (!data?.data)
+        setProfile(armories.ArmoryProfile);
+        setEquipment(armories.ArmoryEquipment);
+        setAvatars(armories.ArmoryAvatars);
+        setSkills(armories.ArmorySkills);
+        setEngraving(armories.ArmoryEngraving);
+    }, [
+        armories,
+        setProfile,
+        setEquipment,
+        setAvatars,
+        setSkills,
+        setEngraving,
+    ]);
+
+    if (!armories) {
         return (
             <div className="flex flex-col pt-40 items-center">
                 <Empty description />
@@ -29,10 +56,11 @@ export function CharacterPage() {
                 <span>캐릭터를 찾을 수 없습니다.</span>
             </div>
         );
+    }
 
     return (
-        <div className="flex flex-col px-4">
-            <Profile user={data.data.ArmoryProfile} />
+        <div className="px-4">
+            <Profile />
             <Tabs
                 type="line"
                 defaultActiveKey="1"
@@ -41,17 +69,26 @@ export function CharacterPage() {
                     {
                         label: <span className="font-bold">전투</span>,
                         key: "1",
-                        children: (
-                            <Armories
-                                stats={data.data.ArmoryProfile.Stats}
-                                engraving={data.data.ArmoryEngraving}
-                            />
-                        ),
+                        children: <Armories />,
                     },
                 ]}
             ></Tabs>
         </div>
     );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+    const characterName = context.params?.characterName;
+
+    const response = await getArmories(
+        `/api/armories/characters/${characterName}`
+    );
+
+    return {
+        props: {
+            armories: response?.data,
+        },
+    };
 }
 
 export default CharacterPage;

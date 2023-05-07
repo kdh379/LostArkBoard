@@ -30,13 +30,11 @@ const NavBar = () => {
 
     return (
         <header className="flex flex-row justify-between items-center my-3">
-            <div
-                className="lg:flex hidden flex-col mx-3 justify-center h-full cursor-pointer"
-                onClick={handlerRedirectHome}
-            >
-                <div className="mb-0 strong--1">LoABoard</div>
+            <div className="mx-3 cursor-pointer" onClick={handlerRedirectHome}>
+                <span className="lg:block hidden mb-0 strong--1">LoABoard</span>
+                <span className="lg:hidden block mb-0 strong--1">LB</span>
             </div>
-            <div className="flex-1 mx-3 shadow-sm">
+            <div className="flex-1 items-center pr-3 shadow-sm">
                 <form onSubmit={(e) => handlerSearchCharacter(e)}>
                     <Search
                         className="bg-surface font-bold"
@@ -44,7 +42,7 @@ const NavBar = () => {
                         value={characterName}
                         onChange={handlerCharacterNameChange}
                         onSearch={() => handlerSearchCharacter()}
-                    ></Search>
+                    />
                 </form>
             </div>
         </header>

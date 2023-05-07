@@ -1,22 +1,41 @@
 import { Card } from "antd";
 import classNames from "classnames";
 import Image from "next/image";
+import { useRecoilValue } from "recoil";
+import { engravingAtom, equipmentAtom, profileAtom } from "./character.atom";
+import { convertEngraving } from "utils/script/engraving-converter";
 
-interface ArmoriesProps extends CombatStatsProps, EngravingProps {}
-
-interface CombatStatsProps {
-    stats: StatEntity[];
-}
-
-interface EngravingProps {
-    engraving: ArmoryEngravingEntity;
-}
+import style from "./_armories.module.scss";
+import { getGradeColor } from "utils/script/equipment";
 
 const CARD_PADDING = {
     paddingTop: "0.8rem",
     paddingBottom: "0.8rem",
     paddingLeft: "0.6rem",
     paddingRight: "0.6rem",
+};
+
+const getArmorIconStyle = (grade: string) => {
+    switch (grade) {
+        case "고대":
+            return style["armor__icon--6"];
+        case "유물":
+            return style["armor__icon--5"];
+        case "전설":
+            return style["armor__icon--4"];
+        case "영웅":
+            return style["armor__icon--3"];
+        case "희귀":
+            return style["armor__icon--2"];
+        case "고급":
+            return style["armor__icon--1"];
+        default:
+            return "";
+    }
+};
+
+const isArmor = (type: string) => {
+    return ["무기", "투구", "상의", "하의", "장갑", "어깨"].includes(type);
 };
 
 const getUsefulStats = (stats: StatEntity[]) => {
@@ -48,47 +67,68 @@ const isStat = (stat: StatEntity) => {
     return stat.Type === "공격력" || stat.Type === "최대 생명력";
 };
 
-function Engraving(props: EngravingProps) {
-    const { engraving } = props;
+function Engraving() {
+    const engraving = useRecoilValue(engravingAtom);
 
     return (
         <div className="flex flex-col gap-2">
-            <Card className="bg-surface" bodyStyle={CARD_PADDING}>
-                <div className="flex flex-col gap-2"></div>
+            <Card bodyStyle={CARD_PADDING}>
+                <div className="flex flex-col gap-2">
+                    {convertEngraving(engraving).map((engraving) => (
+                        <div
+                            key={engraving.name}
+                            className="flex gap-x-2 items-center"
+                        >
+                            {/* <Image
+                                src={engraving.icon}
+                                width={32}
+                                height={32}
+                                alt={engraving.name}
+                                className="rounded-full"
+                            /> */}
+                            <span className="font-bold text-xl">
+                                {engraving.level}
+                            </span>
+                            <span>{engraving.name}</span>
+                        </div>
+                    ))}
+                </div>
             </Card>
         </div>
     );
 }
 
-function CombatStats(props: CombatStatsProps) {
-    const { stats } = props;
+function CombatStats() {
+    const { Stats } = useRecoilValue(profileAtom);
 
     return (
-        <Card className="bg-surface" bodyStyle={CARD_PADDING}>
+        <Card bodyStyle={CARD_PADDING}>
             <div className="flex flex-col gap-3">
                 <div className="flex gap-3 justify-between">
-                    {getUsefulStats(stats).map((stat) => (
+                    {getUsefulStats(Stats).map((stat) => (
                         <div
                             className="flex-1 flex flex-col justify-between"
                             key={stat.Type}
                         >
                             <span>{stat.Type}</span>
-                            <span className="strong--3">{stat.Value}</span>
+                            <span className="font-bold text-2xl">
+                                {stat.Value}
+                            </span>
                         </div>
                     ))}
                 </div>
                 <div className="flex flex-col">
-                    {stats.map((stat) => {
+                    {Stats.map((stat) => {
                         if (isStat(stat)) {
                             return (
                                 <div
                                     className="flex gap-2 justify-between items-center"
                                     key={stat.Type}
                                 >
-                                    <div className="flex-1">{stat.Type}</div>
-                                    <div className="flex-1 strong--5">
+                                    <span className="flex-1">{stat.Type}</span>
+                                    <span className="flex-1 font-bold">
                                         {stat.Value}
-                                    </div>
+                                    </span>
                                 </div>
                             );
                         }
@@ -99,15 +139,60 @@ function CombatStats(props: CombatStatsProps) {
     );
 }
 
-export function Armories(props: ArmoriesProps) {
-    const { stats, engraving } = props;
+function Equipment() {
+    const equipments = useRecoilValue(equipmentAtom);
 
     return (
-        <div className="flex flex-warp gap-4">
-            <div className="flex flex-col w-52 gap-4">
-                <CombatStats stats={stats} />
-                <Engraving engraving={engraving} />
+        <div className="">
+            <Card className="flex flex-col" bodyStyle={CARD_PADDING}>
+                <div className="flex flex-col gap-3">
+                    {equipments
+                        .filter((equipment) => isArmor(equipment.Type))
+                        .map((equipment) => (
+                            <div
+                                key={equipment.Type}
+                                className="flex gap-x-2 items-center"
+                            >
+                                <Image
+                                    src={equipment.Icon}
+                                    width={64}
+                                    height={64}
+                                    alt={equipment.Type}
+                                    className={classNames(
+                                        style.armor__icon,
+                                        getArmorIconStyle(equipment.Grade)
+                                    )}
+                                />
+                                <div>
+                                    <span
+                                        className={classNames(
+                                            `font-bold text-${getGradeColor(
+                                                equipment.Grade
+                                            )}`
+                                        )}
+                                    >
+                                        {equipment.Name}
+                                    </span>
+                                </div>
+                            </div>
+                        ))}
+                </div>
+            </Card>
+        </div>
+    );
+}
+
+export function Armories() {
+    return (
+        <div className="flex flex-wrap">
+            <div className="flex flex-col gap-3 min-w-[12rem]">
+                <CombatStats />
+                <Engraving />
             </div>
+            <div className="flex-1 pl-3">
+                <Equipment />
+            </div>
+            <div className="bg-purple-600"></div>
         </div>
     );
 }

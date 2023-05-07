@@ -3,12 +3,10 @@ import { Tag } from "antd";
 import Image from "next/image";
 
 import style from "./_character.module.scss";
+import { useRecoilValue } from "recoil";
+import { profileAtom } from "./character.atom";
 
-interface ProfilesProps {
-    user: User;
-}
-
-export function Profile(props: ProfilesProps) {
+export function Profile() {
     const {
         CharacterClassName,
         CharacterImage,
@@ -22,7 +20,7 @@ export function Profile(props: ProfilesProps) {
         Title,
         TownLevel,
         TownName,
-    } = props.user;
+    } = useRecoilValue(profileAtom);
 
     const HEADER_INFO_LIST = [
         ServerName,
@@ -74,6 +72,7 @@ export function Profile(props: ProfilesProps) {
                     alt={CharacterName}
                     width={600}
                     height={600}
+                    priority
                 ></Image>
             </div>
         </div>

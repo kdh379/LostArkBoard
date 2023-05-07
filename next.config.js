@@ -13,19 +13,6 @@ const nextConfig = {
         domains: ["cdn-lostark.game.onstove.com", "img.lostark.co.kr"],
     },
     pageExtensions: ["page.tsx", "page.ts"],
-    async headers() {
-        return [
-            {
-                source: "/api/:path*",
-                headers: [
-                    {
-                        key: "Authorization",
-                        value: "",
-                    },
-                ],
-            },
-        ];
-    },
     async rewrites() {
         return [
             {

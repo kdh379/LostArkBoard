@@ -10,4 +10,20 @@
     html {
         @apply text-xs;
     }
+
+    .ant-card {
+        @apply text-base;
+    }
+}
+
+// ant design의 기본 설정을 덮어쓰기 위한 설정
+.ant-card {
+    @apply border-none
+        bg-surface;
+}
+
+.ant-btn-icon-only {
+    @apply flex
+        items-center
+        justify-center;
 }

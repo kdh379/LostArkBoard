@@ -6,6 +6,7 @@ import "@styles/globals.scss";
 import Head from "next/head";
 import { Layout } from "@components/layout";
 import { ConfigProvider, theme } from "antd";
+import { RecoilRoot } from "recoil";
 
 const AppMain = ({ Component, pageProps }: AppProps) => {
     return (
@@ -24,17 +25,19 @@ const App = (props: AppProps) => {
                     content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0"
                 />
             </Head>
-            <ConfigProvider
-                theme={{
-                    algorithm: theme.darkAlgorithm,
-                }}
-            >
-                <div className="app dark-mode">
-                    <main className="app-main">
-                        <AppMain {...props} />
-                    </main>
-                </div>
-            </ConfigProvider>
+            <RecoilRoot>
+                <ConfigProvider
+                    theme={{
+                        algorithm: theme.darkAlgorithm,
+                    }}
+                >
+                    <div className="app dark-mode">
+                        <main className="app-main">
+                            <AppMain {...props} />
+                        </main>
+                    </div>
+                </ConfigProvider>
+            </RecoilRoot>
         </>
     );
 };

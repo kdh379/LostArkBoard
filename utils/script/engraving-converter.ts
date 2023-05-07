@@ -1,7 +1,4 @@
-const engravingIcon = {
-    원한: "https://cdn-lostark.iloa.gg/EFUI_IconAtlas/Buff/Buff_71.png",
-    "예리한 둔기":
-        "https://cdn-lostark.iloa.gg/EFUI_IconAtlas/Achieve/achieve_03_40.png",
+const engravingIcon: { [key: string]: string } = {
     "포격 강화":
         "https://cdn-lostark.game.onstove.com/EFUI_IconAtlas/GL_Skill/GL_Skill_01_26.png",
     "저주받은 인형":
@@ -12,16 +9,23 @@ const engravingIcon = {
 export const convertEngraving = (
     engraving: ArmoryEngravingEntity
 ): EngravingType[] => {
-    const { Effects } = engraving;
+    const { Effects, Engravings } = engraving;
 
     const engravingList: EngravingType[] = [];
 
-    // for (const effect of Effects) {
-    //     const { Name, Description } = effect;
+    Effects.forEach((effect) => {
+        const { Name, Description } = effect;
 
-    //     const icon = engravingIcon[Name];
+        const [name, level] = Name.split(" Lv. ");
 
-    return [];
+        engravingList.push({
+            name,
+            icon: engravingIcon[name] || "",
+            level: Number(level),
+        });
+    });
+
+    return engravingList;
 };
 
 declare type EngravingType = {
