@@ -66,14 +66,16 @@ export function Profile() {
                 </div>
             </div>
             <div className={style["character-image"]}>
-                <Image
-                    className="object-cover object-top"
-                    src={CharacterImage}
-                    alt={CharacterName}
-                    width={600}
-                    height={600}
-                    priority
-                ></Image>
+                {CharacterImage !== "" && (
+                    <Image
+                        className="object-cover object-top"
+                        src={CharacterImage}
+                        alt={CharacterName}
+                        width={600}
+                        height={600}
+                        priority
+                    />
+                )}
             </div>
         </div>
     );

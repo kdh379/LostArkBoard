@@ -27,7 +27,6 @@ const instance = axios.create({
         accept: "application/json",
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_LOA_API_KEY}`,
     },
-    timeout: 5000,
     httpsAgent: new https.Agent({
         rejectUnauthorized: false,
         secureProtocol: "TLSv1_2_method",
