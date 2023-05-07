@@ -14,6 +14,8 @@ import {
     profileAtom,
     skillsAtom,
 } from "./character.atom";
+import Head from "next/head";
+import { Helmet } from "@components/helmet";
 
 interface CharacterPageProps {
     armories: ArmoriesEntity;
@@ -59,21 +61,24 @@ export function CharacterPage(props: CharacterPageProps) {
     }
 
     return (
-        <div className="px-4">
-            <Profile />
-            <Tabs
-                type="line"
-                defaultActiveKey="1"
-                className="mt-4"
-                items={[
-                    {
-                        label: <span className="font-bold">전투</span>,
-                        key: "1",
-                        children: <Armories />,
-                    },
-                ]}
-            ></Tabs>
-        </div>
+        <>
+            <Helmet title={characterName as string} />
+            <div className="px-4">
+                <Profile />
+                <Tabs
+                    type="line"
+                    defaultActiveKey="1"
+                    className="mt-4"
+                    items={[
+                        {
+                            label: <span className="font-bold">전투</span>,
+                            key: "1",
+                            children: <Armories />,
+                        },
+                    ]}
+                ></Tabs>
+            </div>
+        </>
     );
 }
 
