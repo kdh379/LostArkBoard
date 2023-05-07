@@ -1,26 +1,5 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
 
-// tailwind css 타입
-
-/** @type {import('tailwindcss').Config} */
-const config = {
-    safelist: [
-        "text-itemGrade1",
-        "text-itemGrade2",
-        "text-itemGrade3",
-        "text-itemGrade4",
-        "text-itemGrade5",
-        "text-itemGrade6",
-        "text-itemGrade7",
-        "to-itemGrade1",
-        "to-itemGrade2",
-        "to-itemGrade3",
-        "to-itemGrade4",
-        "to-itemGrade5",
-        "to-itemGrade6",
-        "to-itemGrade7",
-    ],
-};
 module.exports = {
     content: [
         "./pages/**/*.{html,js,ts,tsx,scss}",
