@@ -1,33 +1,31 @@
 .armor__icon {
-    @apply rounded-md
-        bg-gradient-to-br
-        from-[#3d3325];
+    @apply rounded-md;
+}
 
-    &--7 {
-        @apply to-itemGrade7;
-    }
+.armor__icon--1 {
+    background-image: linear-gradient(to bottom right, #3d3325, #8df901);
+}
 
-    &--6 {
-        @apply to-itemGrade6;
-    }
+.armor__icon--2 {
+    background-image: linear-gradient(to bottom right, #3d3325, #00b0fa);
+}
 
-    &--5 {
-        @apply to-itemGrade5;
-    }
+.armor__icon--3 {
+    background-image: linear-gradient(to bottom right, #3d3325, #ba00f9);
+}
 
-    &--4 {
-        @apply to-itemGrade4;
-    }
+.armor__icon--4 {
+    background-image: linear-gradient(to bottom right, #3d3325, #f9a100);
+}
 
-    &--3 {
-        @apply to-itemGrade3;
-    }
+.armor__icon--5 {
+    background-image: linear-gradient(to bottom right, #3d3325, #fa5d00);
+}
 
-    &--2 {
-        @apply to-itemGrade2;
-    }
+.armor__icon--6 {
+    background-image: linear-gradient(to bottom right, #3d3325, #ddc29d);
+}
 
-    &--1 {
-        @apply to-itemGrade1;
-    }
+.armor__icon--7 {
+    background-image: linear-gradient(to bottom right, #3d3325, #3cf2e6);
 }
