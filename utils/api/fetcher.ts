@@ -22,7 +22,7 @@ export const fetcherLoaAPI = async <T>(url: string) => {
 };
 
 const instance = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: `${process.env.NEXT_PUBLIC_LOA_API_PATH}`,
     headers: {
         accept: "application/json",
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_LOA_API_KEY}`,

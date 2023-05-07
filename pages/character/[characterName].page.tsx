@@ -85,9 +85,7 @@ export function CharacterPage(props: CharacterPageProps) {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
     const characterName = context.params?.characterName;
 
-    const response = await getArmories(
-        `/api/armories/characters/${characterName}`
-    );
+    const response = await getArmories(`/armories/characters/${characterName}`);
 
     return {
         props: {
