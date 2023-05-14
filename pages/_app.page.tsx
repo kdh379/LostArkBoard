@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 
 import type { AppProps } from "next/app";
 
@@ -7,6 +7,7 @@ import Head from "next/head";
 import { Layout } from "@components/layout";
 import { ConfigProvider, theme } from "antd";
 import { RecoilRoot } from "recoil";
+import Loading from "@components/loading";
 
 const AppMain = ({ Component, pageProps }: AppProps) => {
     return (

@@ -1,31 +1,76 @@
 .armor__icon {
-    @apply rounded-md;
+    @apply flex gap-x-2 items-start;
+
+    img {
+        @apply rounded-md;
+    }
 }
 
 .armor__icon--1 {
-    background-image: linear-gradient(to bottom right, #3d3325, #8df901);
+    img {
+        background-image: linear-gradient(to bottom right, #3d3325, #8df901);
+    }
+    label {
+        @apply text-itemGrade1;
+    }
 }
 
 .armor__icon--2 {
-    background-image: linear-gradient(to bottom right, #3d3325, #00b0fa);
+    img {
+        background-image: linear-gradient(to bottom right, #3d3325, #00b0fa);
+    }
+
+    label {
+        @apply text-itemGrade2;
+    }
 }
 
 .armor__icon--3 {
-    background-image: linear-gradient(to bottom right, #3d3325, #ba00f9);
+    img {
+        background-image: linear-gradient(to bottom right, #3d3325, #ba00f9);
+    }
+
+    label {
+        @apply text-itemGrade3;
+    }
 }
 
 .armor__icon--4 {
-    background-image: linear-gradient(to bottom right, #3d3325, #f9a100);
+    img {
+        background-image: linear-gradient(to bottom right, #3d3325, #f9a100);
+    }
+
+    label {
+        @apply text-itemGrade4;
+    }
 }
 
 .armor__icon--5 {
-    background-image: linear-gradient(to bottom right, #3d3325, #fa5d00);
+    img {
+        background-image: linear-gradient(to bottom right, #3d3325, #fa5d00);
+    }
+
+    label {
+        @apply text-itemGrade5;
+    }
 }
 
 .armor__icon--6 {
-    background-image: linear-gradient(to bottom right, #3d3325, #ddc29d);
+    img {
+        background-image: linear-gradient(to bottom right, #3d3325, #ddc29d);
+    }
+
+    label {
+        @apply text-itemGrade6;
+    }
 }
 
 .armor__icon--7 {
-    background-image: linear-gradient(to bottom right, #3d3325, #3cf2e6);
+    img {
+        background-image: linear-gradient(to bottom right, #3d3325, #3cf2e6);
+    }
+
+    label {
+        @apply text-itemGrade7;
+    }
 }

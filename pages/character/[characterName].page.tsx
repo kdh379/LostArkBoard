@@ -1,4 +1,4 @@
-import { Empty, Tabs } from "antd";
+import { Empty, Spin, Tabs } from "antd";
 import { useRouter } from "next/router";
 import { getArmories } from "utils/api/armories";
 import { Profile } from "./profile";
@@ -14,15 +14,15 @@ import {
     profileAtom,
     skillsAtom,
 } from "./character.atom";
-import Head from "next/head";
 import { Helmet } from "@components/helmet";
 
 interface CharacterPageProps {
     armories: ArmoriesEntity;
+    isLoading: boolean;
 }
 
 export function CharacterPage(props: CharacterPageProps) {
-    const { armories } = props;
+    const { armories, isLoading } = props;
 
     const router = useRouter();
     const { characterName } = router.query;
@@ -49,6 +49,15 @@ export function CharacterPage(props: CharacterPageProps) {
         setSkills,
         setEngraving,
     ]);
+
+    if (isLoading) {
+        return (
+            <Spin
+                className="w-full h-full flex items-center justify-center"
+                size="large"
+            />
+        );
+    }
 
     if (!armories) {
         return (
@@ -87,9 +96,18 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
     const response = await getArmories(`/armories/characters/${characterName}`);
 
+    if (!response)
+        return {
+            props: {
+                armories: null,
+                isLoading: false,
+            },
+        };
+
     return {
         props: {
             armories: response?.data,
+            isLoading: false,
         },
     };
 }
