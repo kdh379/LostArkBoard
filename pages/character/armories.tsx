@@ -1,69 +1,15 @@
-import { Card, Progress, Tag } from "antd";
-import classNames from "classnames";
-import Image from "next/image";
+import { Card } from "antd";
 import { useRecoilValue } from "recoil";
-import { engravingAtom, equipmentAtom, profileAtom } from "./character.atom";
+import { engravingAtom, profileAtom } from "./character.atom";
 import { convertEngraving } from "utils/script/engraving-converter";
-import { getElixir as parseArmorToolTip } from "utils/script/tooltip-converter";
 
-import style from "./_armories.module.scss";
-import { getGradeColor } from "utils/script/equipment";
-import { useEffect, useState } from "react";
-import { preset } from "swr/_internal";
-import { getQualityColor } from "utils/script/color";
-
-declare type Elixir = {
-    name: string;
-    value: string;
-    level: number;
-};
-
-declare type armorSet = {
-    name: string;
-    level: number;
-};
-
-declare type Armor = {
-    name: string;
-    type: string;
-    grade: string;
-    icon: string;
-    qualityValue: number;
-    elixirList: Elixir[];
-
-    armorSet?: armorSet;
-};
+import EquipmentCard from "./equipment";
 
 const CARD_PADDING = {
     paddingTop: "0.8rem",
     paddingBottom: "0.8rem",
     paddingLeft: "0.6rem",
     paddingRight: "0.6rem",
-};
-
-const getArmorGradeStyle = (grade: string) => {
-    switch (grade) {
-        case "에스더":
-            return style["armor__icon--7"];
-        case "고대":
-            return style["armor__icon--6"];
-        case "유물":
-            return style["armor__icon--5"];
-        case "전설":
-            return style["armor__icon--4"];
-        case "영웅":
-            return style["armor__icon--3"];
-        case "희귀":
-            return style["armor__icon--2"];
-        case "고급":
-            return style["armor__icon--1"];
-        default:
-            return "";
-    }
-};
-
-const isArmor = (type: string) => {
-    return ["무기", "투구", "상의", "하의", "장갑", "어깨"].includes(type);
 };
 
 const getUsefulStats = (stats: StatEntity[]) => {
@@ -169,104 +115,6 @@ function CombatStats() {
     );
 }
 
-function Equipment() {
-    const equipments = useRecoilValue(equipmentAtom);
-    const [armorList, setArmorList] = useState<Armor[]>([]);
-
-    useEffect(() => {
-        setArmorList(
-            equipments
-                .filter((equipment) => isArmor(equipment.Type))
-                .map((equipment) => {
-                    const toolTip = parseArmorToolTip(equipment.Tooltip);
-
-                    return {
-                        type: equipment.Type,
-                        grade: equipment.Grade,
-                        name: equipment.Name,
-                        icon: equipment.Icon,
-                        elixirList: toolTip.elixir,
-                        qualityValue: toolTip.qualityValue,
-                        armorSet: toolTip.armorSet ?? undefined,
-                    };
-                })
-        );
-    }, [equipments]);
-
-    return (
-        <Card bodyStyle={CARD_PADDING}>
-            <div className="flex flex-col gap-3">
-                {armorList.map((armor) => {
-                    const qualityColor = getQualityColor(armor.qualityValue);
-                    return (
-                        <div
-                            key={armor.type}
-                            className={classNames(
-                                style.armor__icon,
-                                getArmorGradeStyle(armor.grade)
-                            )}
-                        >
-                            <Image
-                                src={armor.icon}
-                                width={64}
-                                height={64}
-                                alt={armor.type}
-                                className="self-center"
-                            />
-                            <div className="flex flex-col gap-x-2 w-56">
-                                <label className={classNames(`font-bold`)}>
-                                    {armor.name}
-                                </label>
-                                <div className="flex items-center">
-                                    {armor.armorSet && (
-                                        <Tag className="font-bold">
-                                            <span>{armor.armorSet.name}</span>
-                                            <span className="pl-1">
-                                                Lv.
-                                                {armor.armorSet.level}
-                                            </span>
-                                        </Tag>
-                                    )}
-                                    <span
-                                        className="font-bold pr-2"
-                                        style={{
-                                            color: qualityColor,
-                                        }}
-                                    >
-                                        {armor.qualityValue}
-                                    </span>
-                                    <Progress
-                                        percent={armor.qualityValue}
-                                        showInfo={false}
-                                        trailColor="#ffffff"
-                                        strokeColor={qualityColor}
-                                    />
-                                </div>
-                                <div className="flex">
-                                    {armor.elixirList?.map((elixir) => {
-                                        return (
-                                            <Tag
-                                                className="font-bold"
-                                                key={elixir.name}
-                                            >
-                                                <span>{elixir.name}</span>
-                                                <span className="pl-1">
-                                                    Lv.
-                                                    {elixir.level}
-                                                </span>
-                                            </Tag>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
-        </Card>
-    );
-}
-
 export function Armories() {
     return (
         <div className="flex flex-wrap">
@@ -275,7 +123,7 @@ export function Armories() {
                 <Engraving />
             </div>
             <div className="flex-1 pl-3">
-                <Equipment />
+                <EquipmentCard />
             </div>
             <div className="bg-purple-600"></div>
         </div>

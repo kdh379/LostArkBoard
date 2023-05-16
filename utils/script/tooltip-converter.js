@@ -2,6 +2,13 @@ const ELIXIR_REGEX =
     /<FONT.*?>(\[(.*?)\])?<\/FONT> (.*?) <FONT.*?>Lv\.(\d)<\/FONT><br>(.*)/;
 
 const ARMOR_SET_REGEX = /(.+) <FONT COLOR='#FFD200'>Lv\.(\d+)<\/FONT>/;
+const COMBAT_STAT_REGEX = /\[(.+?)\].+\+(\d+)/;
+
+const HTML_TAG_REGEX = /<[^>]*>/g;
+
+const getQualityValue = (val) => {
+    return val.value.qualityValue;
+};
 
 /**
  *
@@ -20,7 +27,7 @@ const ARMOR_SET_REGEX = /(.+) <FONT COLOR='#FFD200'>Lv\.(\d+)<\/FONT>/;
  * }>
  * }}
  */
-export const getElixir = (obj) => {
+export const parseArmorToolTip = (obj) => {
     const elixir = [];
     let armorSet = {};
     let qualityValue = "";
@@ -51,7 +58,7 @@ export const getElixir = (obj) => {
         }
 
         if (val.type === "ItemTitle") {
-            qualityValue = val.value.qualityValue;
+            qualityValue = getQualityValue(val);
         }
 
         if (val.type === "ItemPartBox") {
@@ -77,10 +84,69 @@ export const getElixir = (obj) => {
     };
 };
 
-export const getQualityValue = (obj) => {
+/**
+ * @param {string} obj
+ * @returns {{
+ * qualityValue: number,
+ * possibleEffects: Array<{
+ *   name: string,
+ *   value: string,
+ * }>
+ * combatStats: Array<{
+ *  name: string,
+ *  value: string,
+ * }>
+ * }}
+ *
+ **/
+export const parseAccessoryToolTip = (obj) => {
+    let qualityValue = "";
+    const possibleEffects = [];
+    const combatStats = [];
+
     const data = JSON.parse(obj);
 
-    const qualityValue = data["QualityValue"];
+    Object.values(data).forEach((val) => {
+        if (val.type === "ItemTitle") {
+            qualityValue = getQualityValue(val);
+        } else if (val.type === "ItemPartBox") {
+            const elementList = val.value;
 
-    return qualityValue;
+            Object.values(elementList).forEach((el) => {
+                if (el.includes("추가 효과")) {
+                    const matches =
+                        elementList.Element_001.toUpperCase().split("<BR>");
+
+                    for (const match of matches) {
+                        const [name, value] = match.split(" +");
+                        possibleEffects.push({
+                            name,
+                            value,
+                        });
+                    }
+                }
+            });
+        } else if (val.type === "IndentStringGroup") {
+            const elementList = val.value.Element_000.contentStr;
+
+            Object.values(elementList).forEach((el) => {
+                const str = el.contentStr;
+
+                const [_, name, value] = str
+                    .split(HTML_TAG_REGEX)
+                    .filter(Boolean);
+
+                combatStats.push({
+                    name,
+                    value: value.replace(/[^0-9]/g, ""),
+                });
+            });
+        }
+    });
+
+    return {
+        qualityValue,
+        possibleEffects,
+        combatStats,
+    };
 };

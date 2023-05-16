@@ -5,7 +5,9 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
     return (
         <>
             <NavBar />
-            <div className="flex-1 h-full overflow-auto">{children}</div>
+            <div className="flex-1 h-full overflow-auto pt-2 pb-5">
+                {children}
+            </div>
         </>
     );
 };

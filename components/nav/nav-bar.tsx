@@ -1,5 +1,4 @@
-import { Button, ConfigProvider, Input, theme } from "antd";
-import Link from "next/link";
+import { Input } from "antd";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 
@@ -29,12 +28,13 @@ const NavBar = () => {
     };
 
     return (
-        <header className="flex flex-row justify-between items-center my-3">
+        // div 하단에 그림자 추가
+        <header className="flex items-center justify-between mt-2 shadow-xl">
             <div className="mx-3 cursor-pointer" onClick={handlerRedirectHome}>
                 <span className="lg:block hidden mb-0 strong--1">LoABoard</span>
                 <span className="lg:hidden block mb-0 strong--1">LB</span>
             </div>
-            <div className="flex-1 items-center pr-3 shadow-sm">
+            <div className="flex-1 items-center pr-3">
                 <form onSubmit={(e) => handlerSearchCharacter(e)}>
                     <Search
                         className="bg-surface font-bold"

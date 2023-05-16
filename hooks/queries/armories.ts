@@ -7,8 +7,6 @@ interface ArmoriesArgs {
 }
 
 export function useArmories(args: ArmoriesArgs) {
-    console.log(args.characterName);
-
     return useQuery({
         queryKey: [
             getAPIInfo("character.armories", {
