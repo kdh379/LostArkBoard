@@ -1,5 +1,8 @@
-import { fetcherLoaAPI } from "./fetcher";
+import { request } from "./request";
 
-export const getArmories = async (url: string) => {
-    return await fetcherLoaAPI<ArmoriesEntity>(url, "server");
+export const getArmories = (characterName: string) => {
+    return request({
+        apiPathKey: "character.armories",
+        params: { characterName },
+    });
 };

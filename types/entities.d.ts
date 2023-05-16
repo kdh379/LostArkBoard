@@ -1,11 +1,11 @@
-declare type NoticeEntities = {
+declare type NoticeEntity = {
     Title: string;
     Date: string;
     Link: string;
     Type: string;
 };
 
-declare type EventEntities = {
+declare type EventEntity = {
     Title: string;
     Thumbnail: string;
     Link: string;
@@ -14,17 +14,17 @@ declare type EventEntities = {
     RewardDate: string;
 };
 
-interface GameContentsEntities {
+interface GameContentsEntity {
     CategoryName: string;
     ContentsName: string;
     ContentsIcon: string;
     MinItemLevel: number;
     StartTimes: string[];
     Location: string;
-    RewardItems: RewardItemEntities[];
+    RewardItems: RewardItemEntity[];
 }
 
-declare type RewardItemEntities = {
+declare type RewardItemEntity = {
     Name: string;
     Icon: string;
     Grade: string;

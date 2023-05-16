@@ -7,7 +7,7 @@ interface GameContentsType {
 interface ContentsType {
     ContentsName: string;
     StartTimes: string[];
-    RewardItems: RewardItemEntities[];
+    RewardItems: RewardItemEntity[];
 }
 
 declare type ClosestEventType = {

@@ -1,18 +1,22 @@
+import Loading from "@components/loading";
 import { Carousel } from "antd";
+import { useNewsEvents } from "hooks/queries/news";
 import Image from "next/image";
-import useSWR from "swr";
-import { getEvents } from "utils/api/news";
 
 export function EventsCarousel() {
-    const { data, error, isLoading } = useSWR("/api/news/events", getEvents);
+    const { data: response, isLoading } = useNewsEvents();
 
     const handlerRedirect = (link: string) => {
         window.open(link, "_blank");
     };
 
+    if (isLoading) {
+        return <Loading />;
+    }
+
     return (
         <Carousel className="px-3 py-2" autoplay>
-            {data?.data.map((item) => (
+            {response?.data?.map((item) => (
                 <div
                     key={item.Title}
                     onClick={() => handlerRedirect(item.Link)}

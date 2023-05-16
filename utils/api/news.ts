@@ -1,10 +1,13 @@
-// 1. news 데이터를 를 가져오는 api
-import { fetcherLoaAPI } from "./fetcher";
+import { request } from "./request";
 
-export const getNotices = async () => {
-    return await fetcherLoaAPI<NoticeEntities[]>("/api/news/notices", "client");
+export const getNotices2 = () => {
+    return request({
+        apiPathKey: "news.notices",
+    });
 };
 
-export const getEvents = async () => {
-    return await fetcherLoaAPI<EventEntities[]>("/api/news/events", "client");
+export const getEvents2 = () => {
+    return request({
+        apiPathKey: "news.events",
+    });
 };

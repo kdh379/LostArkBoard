@@ -1,11 +1,9 @@
 import { Empty, Spin, Tabs } from "antd";
 import { useRouter } from "next/router";
-import { getArmories } from "utils/api/armories";
 import { Profile } from "./profile";
 import { Armories } from "./armories";
 import { useSetRecoilState } from "recoil";
 import { useEffect } from "react";
-import { GetServerSidePropsContext } from "next";
 
 import {
     avatarAtom,
@@ -15,17 +13,15 @@ import {
     skillsAtom,
 } from "./character.atom";
 import { Helmet } from "@components/helmet";
+import { useArmories } from "hooks/queries/armories";
 
-interface CharacterPageProps {
-    armories: ArmoriesEntity;
-    isLoading: boolean;
-}
-
-export function CharacterPage(props: CharacterPageProps) {
-    const { armories, isLoading } = props;
-
+export default function CharacterPage() {
     const router = useRouter();
     const { characterName } = router.query;
+
+    const { data: response, isLoading } = useArmories({
+        characterName: characterName as string,
+    });
 
     const setProfile = useSetRecoilState(profileAtom);
     const setEquipment = useSetRecoilState(equipmentAtom);
@@ -34,15 +30,15 @@ export function CharacterPage(props: CharacterPageProps) {
     const setEngraving = useSetRecoilState(engravingAtom);
 
     useEffect(() => {
-        if (!armories) return;
+        if (!response?.data) return;
 
-        setProfile(armories.ArmoryProfile);
-        setEquipment(armories.ArmoryEquipment);
-        setAvatars(armories.ArmoryAvatars);
-        setSkills(armories.ArmorySkills);
-        setEngraving(armories.ArmoryEngraving);
+        setProfile(response.data.ArmoryProfile);
+        setEquipment(response.data.ArmoryEquipment);
+        setAvatars(response.data.ArmoryAvatars);
+        setSkills(response.data.ArmorySkills);
+        setEngraving(response.data.ArmoryEngraving);
     }, [
-        armories,
+        response,
         setProfile,
         setEquipment,
         setAvatars,
@@ -59,7 +55,7 @@ export function CharacterPage(props: CharacterPageProps) {
         );
     }
 
-    if (!armories) {
+    if (!response?.data) {
         return (
             <div className="flex flex-col pt-40 items-center">
                 <Empty description />
@@ -90,26 +86,3 @@ export function CharacterPage(props: CharacterPageProps) {
         </>
     );
 }
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-    const characterName = context.params?.characterName;
-
-    const response = await getArmories(`/armories/characters/${characterName}`);
-
-    if (!response)
-        return {
-            props: {
-                armories: null,
-                isLoading: false,
-            },
-        };
-
-    return {
-        props: {
-            armories: response?.data,
-            isLoading: false,
-        },
-    };
-}
-
-export default CharacterPage;

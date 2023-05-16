@@ -1,8 +1,8 @@
 import { Card, List, Spin, Tag } from "antd";
-import { getNotices } from "utils/api/news";
-import useSWR from "swr";
 import { useEffect, useState } from "react";
 import { MoreOutlined } from "@ant-design/icons";
+import { useNewsNotices } from "hooks/queries/news";
+import Loading from "@components/loading";
 
 const getColor = (type: string) => {
     switch (type) {
@@ -29,11 +29,11 @@ const getDateString = (date: string) => {
 };
 
 interface NoticesListProps {
-    entities: NoticeEntities[];
+    entities: NoticeEntity[];
 }
 
 const NoticesList = ({ entities }: NoticesListProps) => {
-    const handlerRedirectNotice = (notice: NoticeEntities) => {
+    const handlerRedirectNotice = (notice: NoticeEntity) => {
         window.open(notice.Link, "_blank");
     };
 
@@ -68,9 +68,9 @@ const NoticesList = ({ entities }: NoticesListProps) => {
 };
 
 export const Notices = () => {
-    const [notices, setNotices] = useState<NoticeEntities[]>([]);
+    const [notices, setNotices] = useState<NoticeEntity[]>([]);
 
-    const { data, error, isLoading } = useSWR("/api/news/notices", getNotices);
+    const { data: response, isLoading } = useNewsNotices();
 
     const handlerRedirectNoticeList = () => {
         window.open(
@@ -80,10 +80,16 @@ export const Notices = () => {
     };
 
     useEffect(() => {
-        if (data) {
-            setNotices(data.data.splice(0, 5));
+        if (!response || !response.data) return;
+
+        if (response) {
+            setNotices(response.data.splice(0, 5));
         }
-    }, [data]);
+    }, [response]);
+
+    if (isLoading && !response) return <Loading />;
+
+    if (!response?.data) throw new Error("response is null");
 
     return (
         <div className="flex-1 px-3 py-2">
@@ -106,7 +112,7 @@ export const Notices = () => {
                 }
                 bodyStyle={{ padding: 0 }}
             >
-                {data && <NoticesList entities={notices} />}
+                {response.data && <NoticesList entities={notices} />}
             </Card>
         </div>
     );

@@ -7,7 +7,7 @@ import Head from "next/head";
 import { Layout } from "@components/layout";
 import { ConfigProvider, theme } from "antd";
 import { RecoilRoot } from "recoil";
-import Loading from "@components/loading";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const AppMain = ({ Component, pageProps }: AppProps) => {
     return (
@@ -16,6 +16,8 @@ const AppMain = ({ Component, pageProps }: AppProps) => {
         </Layout>
     );
 };
+
+const queryClient = new QueryClient();
 
 const App = (props: AppProps) => {
     return (
@@ -27,17 +29,19 @@ const App = (props: AppProps) => {
                 />
             </Head>
             <RecoilRoot>
-                <ConfigProvider
-                    theme={{
-                        algorithm: theme.darkAlgorithm,
-                    }}
-                >
-                    <div className="app dark-mode">
-                        <main className="app-main">
-                            <AppMain {...props} />
-                        </main>
-                    </div>
-                </ConfigProvider>
+                <QueryClientProvider client={queryClient}>
+                    <ConfigProvider
+                        theme={{
+                            algorithm: theme.darkAlgorithm,
+                        }}
+                    >
+                        <div className="app dark-mode">
+                            <main className="app-main">
+                                <AppMain {...props} />
+                            </main>
+                        </div>
+                    </ConfigProvider>
+                </QueryClientProvider>
             </RecoilRoot>
         </>
     );

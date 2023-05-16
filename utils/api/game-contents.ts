@@ -2,11 +2,10 @@
 // 2. axios 를 사용하여 호출
 // 3. AxiosResponse<NoticeType[]> 를 사용하여 타입을 지정
 
-import { fetcherLoaAPI } from "./fetcher";
+import { request } from "./request";
 
-export const getContentsCalendar = async () => {
-    return await fetcherLoaAPI<GameContentsEntities[]>(
-        "/api/gamecontents/calendar",
-        "client"
-    );
+export const getContentsCalendar = () => {
+    return request({
+        apiPathKey: "game-contents.calendar",
+    });
 };

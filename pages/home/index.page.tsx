@@ -1,5 +1,5 @@
 import { Helmet } from "@components/helmet";
-import { Notices } from "@components/notices";
+import { Notices } from "pages/home/notices";
 import { ContentsCalendar } from "./contents-calendar";
 import { EventsCarousel } from "./event-carousel";
 

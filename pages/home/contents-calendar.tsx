@@ -1,7 +1,6 @@
 import { Button, Card, List, Spin, Tag } from "antd";
 
 import { useEffect, useState } from "react";
-import { getContentsCalendar } from "utils/api/game-contents";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import {
     convertContents,
@@ -11,21 +10,7 @@ import {
 } from "utils/script/contents-converter";
 import { dateFormat, timeFormat } from "utils/script/time-format";
 import classNames from "classnames";
-import useSWR from "swr";
-
-const CALENDAR_CATEGORY_NAME = [
-    "점령 이벤트",
-    "카오스게이트",
-    "유령선",
-    "필드보스",
-    "모험 섬",
-    "로웬-툴루비크",
-    "로웬-습격",
-];
-
-interface ContentsCalendarItemProps {
-    contentList: ClosestContentsListType[];
-}
+import { useGameContentsCalendar } from "hooks/queries/game-contents";
 
 const ContentsCalendarItem = (props: ClosestContentsListType) => {
     const { ContentsName, RewardItems, isNextEvent } = props;
@@ -101,19 +86,18 @@ export const ContentsCalendar = () => {
     // >([]);
     const [targetDate, setTargetDate] = useState(new Date());
     const [closestEvent, setClosestEvent] = useState<ClosestEventType[]>([]);
-
-    const { data, isLoading } = useSWR(
-        "contents-calendar",
-        getContentsCalendar
-    );
+    const { data: response, isLoading } = useGameContentsCalendar();
 
     useEffect(() => {
-        if (!data) return;
+        if (!response || !response.data) return;
 
-        const events = getClosestEvent(convertContents(data.data), targetDate);
+        const events = getClosestEvent(
+            convertContents(response.data),
+            targetDate
+        );
 
         setClosestEvent(events);
-    }, [data, targetDate]);
+    }, [response, targetDate]);
 
     const handlerPrevDate = () => {
         const prevDate = new Date(targetDate);
@@ -159,7 +143,7 @@ export const ContentsCalendar = () => {
                     paddingTop: 0,
                 }}
             >
-                {data &&
+                {response &&
                     closestEvent.map((event) => (
                         <ContentsCalendarTitle
                             key={`${event.CategoryName} + ${event.StartTime}`}

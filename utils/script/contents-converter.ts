@@ -1,4 +1,4 @@
-export const convertContents = (entities: GameContentsEntities[]) => {
+export const convertContents = (entities: GameContentsEntity[]) => {
     const resultList: GameContentsType[] = [];
 
     entities.forEach((data) => {
