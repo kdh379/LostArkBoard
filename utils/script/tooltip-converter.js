@@ -10,6 +10,11 @@ const getQualityValue = (val) => {
     return val.value.qualityValue;
 };
 
+function removeHtmlTags(input) {
+    const regex = /<[^>]+>/g;
+    return input.replace(regex, "");
+}
+
 /**
  *
  * @param {string} obj
@@ -148,5 +153,84 @@ export const parseAccessoryToolTip = (obj) => {
         qualityValue,
         possibleEffects,
         combatStats,
+    };
+};
+
+/**
+ * @param {string} obj
+ * @returns {{
+ * possibleEffects: Array<{
+ *   name: string,
+ *   value: string,
+ * }>
+ * specialStats: Array<{
+ *  name: string,
+ *  value: string,
+ *  description: string,
+ * }>
+ * }}
+ *
+ **/
+export const parseBraceletToolTip = (obj) => {
+    const possibleEffects = [];
+    const specialStats = [];
+
+    const data = JSON.parse(obj);
+
+    Object.values(data).forEach((val) => {
+        if (val.type === "ItemPartBox") {
+            const elementList = val.value;
+
+            Object.values(elementList).forEach((el) => {
+                if (el.includes("팔찌 효과")) {
+                    const splitElements = elementList.Element_001.split("<BR>");
+
+                    const elements = splitElements.map((value) =>
+                        removeHtmlTags(value.trim())
+                    );
+
+                    for (const element of elements) {
+                        if (element.includes("+")) {
+                            const [name, value] = element.split("+");
+
+                            possibleEffects.push({
+                                name: name.trim(),
+                                value: value.trim(),
+                            });
+                            // [ 문자가 포함되어 있는 경우 다음 [ 문자가 나올 때까지 문자열을 합친다.
+                        } else if (element.includes("[")) {
+                            const pattern = /\[(.*?)\]\s*(.*)/;
+                            const [_, name, value] = element.match(pattern);
+
+                            specialStats.push({
+                                name: name.trim(),
+                                value: "",
+                                description: value.trim(),
+                            });
+                        } else {
+                            specialStats[specialStats.length - 1].description +=
+                                element;
+                        }
+                    }
+                }
+            });
+        }
+    });
+
+    specialStats.forEach((stat) => {
+        // stat.description 에서 "stat.name :" 과 일치하는 곳 다음에 오는 n% 를 value 로 설정한다.
+        const pattern = new RegExp(`${stat.name} :[^%]*\\b(\\d+\\.?\\d*%)`);
+        const match = stat.description.match(pattern);
+
+        if (match) {
+            stat.value = match[1];
+        } else {
+            stat.value = stat.description.match(/(\d+(\.\d+)?)%/)[0] ?? "";
+        }
+    });
+
+    return {
+        possibleEffects,
+        specialStats,
     };
 };

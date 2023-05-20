@@ -45,7 +45,7 @@ function Engraving() {
     const engraving = useRecoilValue(engravingAtom);
 
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex-1 flex flex-col gap-2">
             <Card bodyStyle={CARD_PADDING}>
                 <div className="flex flex-col gap-2">
                     {convertEngraving(engraving).map((engraving) => (
@@ -76,7 +76,7 @@ function CombatStats() {
     const { Stats } = useRecoilValue(profileAtom);
 
     return (
-        <Card bodyStyle={CARD_PADDING}>
+        <Card className="flex-1 sm:flex-none" bodyStyle={CARD_PADDING}>
             <div className="flex flex-col gap-3">
                 <div className="flex gap-3 justify-between">
                     {getUsefulStats(Stats).map((stat) => (
@@ -117,15 +117,12 @@ function CombatStats() {
 
 export function Armories() {
     return (
-        <div className="flex flex-wrap">
-            <div className="flex flex-col gap-3 min-w-[12rem]">
+        <div className="grid sm:grid-cols-4 grid-cols-2 gap-3">
+            <div className="flex sm:flex-col w-full sm:col-span-1 col-span-2 gap-3 min-w-[12rem]">
                 <CombatStats />
                 <Engraving />
             </div>
-            <div className="flex-1 pl-3">
-                <EquipmentCard />
-            </div>
-            <div className="bg-purple-600"></div>
+            <EquipmentCard className="sm:col-span-3 col-span-2" />
         </div>
     );
 }

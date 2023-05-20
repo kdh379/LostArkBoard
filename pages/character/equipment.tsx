@@ -7,6 +7,7 @@ import { equipmentAtom } from "./character.atom";
 import {
     parseAccessoryToolTip,
     parseArmorToolTip,
+    parseBraceletToolTip,
 } from "utils/script/tooltip-converter";
 
 import style from "./_equipment.module.scss";
@@ -52,22 +53,21 @@ declare type armorSet = {
     level: number;
 };
 
-declare type Armor = {
+declare type DefaultEquipment = {
     name: string;
     type: string;
     grade: string;
     icon: string;
+};
+
+interface Armor extends DefaultEquipment {
     qualityValue: number;
     elixirList: Elixir[];
 
     armorSet?: armorSet;
-};
+}
 
-declare type Accessory = {
-    name: string;
-    type: string;
-    grade: string;
-    icon: string;
+interface Accessory extends DefaultEquipment {
     qualityValue: number;
     possibleEffects: {
         name: string;
@@ -77,14 +77,30 @@ declare type Accessory = {
         name: string;
         value: string;
     }[];
-};
+}
+
+interface Bracelet extends DefaultEquipment {
+    possibleEffects: {
+        name: string;
+        value: string;
+    }[];
+    specialStats: {
+        name: string;
+        value: string;
+        description: string;
+    }[];
+}
 
 const isArmor = (type: string) => {
     return ["투구", "상의", "하의", "장갑", "어깨", "무기"].includes(type);
 };
 
 const isAccessory = (type: string) => {
-    return ["목걸이", "반지", "귀걸이", "팔찌", "어빌리티 스톤"].includes(type);
+    return ["목걸이", "반지", "귀걸이", "어빌리티 스톤"].includes(type);
+};
+
+const isBracelet = (type: string) => {
+    return ["팔찌"].includes(type);
 };
 
 interface EquipmentProps {
@@ -108,14 +124,16 @@ function Equipment(props: EquipmentProps) {
         >
             <Image
                 src={icon}
-                width={64}
-                height={64}
+                width={74}
+                height={74}
                 alt={name}
                 className="self-center"
             />
-            <div className="flex flex-col gap-x-2 w-56">
-                <label className={classNames(`font-bold`)}>{name}</label>
-                <div className="flex items-center">
+            <div className="flex-1 flex flex-col gap-1 w-56 h-full items-start justify-between">
+                <div className={classNames(`font-bold`)}>
+                    <label>{name}</label>
+                </div>
+                <div className="flex items-center gap-y-1 flex-wrap w-full">
                     {middleTag?.map((tag) => {
                         return (
                             <Tag className="font-bold" key={tag}>
@@ -123,22 +141,27 @@ function Equipment(props: EquipmentProps) {
                             </Tag>
                         );
                     })}
-                    <span
-                        className="font-bold pr-2"
-                        style={{
-                            color: qualityColor,
-                        }}
-                    >
-                        {qualityValue}
-                    </span>
-                    <Progress
-                        percent={qualityValue}
-                        showInfo={false}
-                        trailColor="#ffffff"
-                        strokeColor={qualityColor}
-                    />
+                    {qualityValue && qualityValue >= 0 && (
+                        <>
+                            <span
+                                className="font-bold pr-2"
+                                style={{
+                                    color: qualityColor,
+                                }}
+                            >
+                                {qualityValue}
+                            </span>
+                            <Progress
+                                percent={qualityValue}
+                                showInfo={false}
+                                trailColor="#ffffff"
+                                strokeColor={qualityColor}
+                                className="flex-1"
+                            />
+                        </>
+                    )}
                 </div>
-                <div className="flex">
+                <div className="flex gap-1 flex-wrap">
                     {bottomTag?.map((tag) => {
                         return (
                             <Tag className="font-bold" key={tag}>
@@ -152,10 +175,15 @@ function Equipment(props: EquipmentProps) {
     );
 }
 
-export default function EquipmentCard() {
+interface EquipmentCardProps {
+    className?: string;
+}
+
+export default function EquipmentCard(props: EquipmentCardProps) {
     const equipments = useRecoilValue(equipmentAtom);
     const [armorList, setArmorList] = useState<Armor[]>([]);
     const [accessoryList, setAccessoryList] = useState<Accessory[]>([]);
+    const [braceletList, setBraceletList] = useState<Bracelet[]>([]);
 
     useEffect(() => {
         setArmorList(
@@ -192,12 +220,26 @@ export default function EquipmentCard() {
                     };
                 })
         );
-    }, [equipments]);
+        setBraceletList(
+            equipments
+                .filter((equipment) => isBracelet(equipment.Type))
+                .map((equipment) => {
+                    const toolTip = parseBraceletToolTip(equipment.Tooltip);
 
-    // TODO Equipment 높이 균일하게 맞추기
+                    return {
+                        type: equipment.Type,
+                        grade: equipment.Grade,
+                        name: equipment.Name,
+                        icon: equipment.Icon,
+                        possibleEffects: toolTip.possibleEffects,
+                        specialStats: toolTip.specialStats,
+                    };
+                })
+        );
+    }, [equipments]);
     return (
-        <Card bodyStyle={CARD_PADDING}>
-            <div className="flex flex-nowrap items-start">
+        <Card className={props.className} bodyStyle={CARD_PADDING}>
+            <div className="flex flex-wrap items-start gap-5">
                 <div className="flex-1">
                     {armorList.map((armor) => (
                         <Equipment
@@ -231,6 +273,21 @@ export default function EquipmentCard() {
                                 (effect) => effect.name
                             )}
                             bottomTag={accessory.combatStats.map(
+                                (stat) => `${stat.name} ${stat.value}`
+                            )}
+                        />
+                    ))}
+                    {braceletList?.map((bracelet) => (
+                        <Equipment
+                            key={bracelet.name}
+                            icon={bracelet.icon}
+                            name={bracelet.name}
+                            grade={bracelet.grade}
+                            qualityValue={-1}
+                            middleTag={bracelet.possibleEffects.map(
+                                (effect) => `${effect.name} ${effect.value}`
+                            )}
+                            bottomTag={bracelet.specialStats.map(
                                 (stat) => `${stat.name} ${stat.value}`
                             )}
                         />
