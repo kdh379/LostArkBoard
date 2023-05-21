@@ -5,6 +5,7 @@ module.exports = {
         "./pages/**/*.{html,js,ts,tsx,scss}",
         "./styles/**/*.{scss}",
         "./components/**/*.{html,js,ts,tsx,scss}",
+        "./hooks/**/*.{html,js,ts,tsx,scss}",
     ],
     lightMode: "class",
     theme: {

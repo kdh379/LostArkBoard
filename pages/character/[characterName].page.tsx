@@ -9,6 +9,7 @@ import {
     avatarAtom,
     engravingAtom,
     equipmentAtom,
+    gemsAtom,
     profileAtom,
     skillsAtom,
 } from "./character.atom";
@@ -28,15 +29,22 @@ export default function CharacterPage() {
     const setAvatars = useSetRecoilState(avatarAtom);
     const setSkills = useSetRecoilState(skillsAtom);
     const setEngraving = useSetRecoilState(engravingAtom);
+    const setGems = useSetRecoilState(gemsAtom);
 
     useEffect(() => {
         if (!response?.data) return;
 
         setProfile(response.data.ArmoryProfile);
-        setEquipment(response.data.ArmoryEquipment);
-        setAvatars(response.data.ArmoryAvatars);
-        setSkills(response.data.ArmorySkills);
-        setEngraving(response.data.ArmoryEngraving);
+        setEquipment(response.data.ArmoryEquipment ?? []);
+        response.data.ArmoryAvatars && setAvatars(response.data.ArmoryAvatars);
+        response.data.ArmorySkills && setSkills(response.data.ArmorySkills);
+        setEngraving(
+            response.data.ArmoryEngraving ?? {
+                Engravings: [],
+                Effects: [],
+            }
+        );
+        response.data.ArmoryGem && setGems(response.data.ArmoryGem);
     }, [
         response,
         setProfile,
@@ -44,6 +52,7 @@ export default function CharacterPage() {
         setAvatars,
         setSkills,
         setEngraving,
+        setGems,
     ]);
 
     if (isLoading) {
@@ -76,9 +85,31 @@ export default function CharacterPage() {
                     className="mt-4"
                     items={[
                         {
-                            label: <span className="font-bold">전투</span>,
+                            label: <span className="font-bold">장비</span>,
                             key: "1",
                             children: <Armories />,
+                        },
+                        {
+                            label: <span className="font-bold">스킬</span>,
+                            key: "2",
+                            children: <div>스킬</div>,
+                        },
+                        {
+                            label: <span className="font-bold">내실</span>,
+                            key: "3",
+                            children: <div>내실</div>,
+                        },
+                        {
+                            label: <span className="font-bold">PVP</span>,
+                            key: "4",
+                            children: <div>PVP</div>,
+                        },
+                        {
+                            label: (
+                                <span className="font-bold">보유 캐릭터</span>
+                            ),
+                            key: "5",
+                            children: <div>기타</div>,
                         },
                     ]}
                 ></Tabs>

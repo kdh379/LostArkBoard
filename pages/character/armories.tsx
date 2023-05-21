@@ -4,6 +4,8 @@ import { engravingAtom, profileAtom } from "./character.atom";
 import { convertEngraving } from "utils/script/engraving-converter";
 
 import EquipmentCard from "./equipment";
+import ArmoryGem from "./armory-gem";
+import Image from "next/image";
 
 const CARD_PADDING = {
     paddingTop: "0.8rem",
@@ -53,13 +55,13 @@ function Engraving() {
                             key={engraving.name}
                             className="flex gap-x-2 items-center"
                         >
-                            {/* <Image
+                            <Image
                                 src={engraving.icon}
                                 width={32}
                                 height={32}
                                 alt={engraving.name}
                                 className="rounded-full"
-                            /> */}
+                            />
                             <span className="font-bold text-xl">
                                 {engraving.level}
                             </span>
@@ -74,6 +76,8 @@ function Engraving() {
 
 function CombatStats() {
     const { Stats } = useRecoilValue(profileAtom);
+
+    if (!Stats) return null;
 
     return (
         <Card className="flex-1 sm:flex-none" bodyStyle={CARD_PADDING}>
@@ -117,12 +121,13 @@ function CombatStats() {
 
 export function Armories() {
     return (
-        <div className="grid sm:grid-cols-4 grid-cols-2 gap-3">
+        <div className="grid lg:grid-cols-4 grid-cols-2 gap-3">
             <div className="flex sm:flex-col w-full sm:col-span-1 col-span-2 gap-3 min-w-[12rem]">
                 <CombatStats />
                 <Engraving />
             </div>
             <EquipmentCard className="sm:col-span-3 col-span-2" />
+            <ArmoryGem className="sm:col-span-3 sm:col-start-2 col-span-2" />
         </div>
     );
 }

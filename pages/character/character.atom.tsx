@@ -46,3 +46,11 @@ export const skillsAtom = atom<ArmorySkillsEntity[]>({
     key: "skills",
     default: [],
 });
+
+export const gemsAtom = atom<ArmoryGemEntity>({
+    key: "gems",
+    default: {
+        Gems: [],
+        Effects: [],
+    },
+});

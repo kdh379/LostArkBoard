@@ -20,7 +20,10 @@ export const convertEngraving = (
 
         engravingList.push({
             name,
-            icon: engravingIcon[name] || "",
+            icon:
+                engravingIcon[name] ||
+                Engravings.find((e) => e.Name === name)?.Icon ||
+                engravingIcon["저주받은 인형"],
             level: Number(level),
         });
     });

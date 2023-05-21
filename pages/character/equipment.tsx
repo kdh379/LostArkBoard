@@ -11,36 +11,10 @@ import {
 } from "utils/script/tooltip-converter";
 
 import style from "./_equipment.module.scss";
+
 import { useEffect, useState } from "react";
-import { getQualityColor } from "utils/script/color";
-
-const CARD_PADDING = {
-    paddingTop: "0.8rem",
-    paddingBottom: "0.8rem",
-    paddingLeft: "0.6rem",
-    paddingRight: "0.6rem",
-};
-
-const getArmorGradeStyle = (grade: string) => {
-    switch (grade) {
-        case "에스더":
-            return style["equipment__icon--7"];
-        case "고대":
-            return style["equipment__icon--6"];
-        case "유물":
-            return style["equipment__icon--5"];
-        case "전설":
-            return style["equipment__icon--4"];
-        case "영웅":
-            return style["equipment__icon--3"];
-        case "희귀":
-            return style["equipment__icon--2"];
-        case "고급":
-            return style["equipment__icon--1"];
-        default:
-            return "";
-    }
-};
+import { CARD_PADDING, getQualityColor } from "@utils/script/style";
+import { useGradeColor } from "hooks/grade";
 
 declare type Elixir = {
     name: string;
@@ -48,7 +22,7 @@ declare type Elixir = {
     level: number;
 };
 
-declare type armorSet = {
+declare type ArmorSet = {
     name: string;
     level: number;
 };
@@ -64,7 +38,7 @@ interface Armor extends DefaultEquipment {
     qualityValue: number;
     elixirList: Elixir[];
 
-    armorSet?: armorSet;
+    armorSet?: ArmorSet;
 }
 
 interface Accessory extends DefaultEquipment {
@@ -116,20 +90,23 @@ function Equipment(props: EquipmentProps) {
     const { icon, name, grade, qualityValue, middleTag, bottomTag } = props;
 
     const qualityColor = getQualityColor(qualityValue);
+    const gradeStyle = useGradeColor(grade);
 
     return (
         <div
             key={name}
-            className={classNames(style.equipment, getArmorGradeStyle(grade))}
+            className="xl:h-[83px] min-w-[300px] flex gap-x-3 items-center my-1 w-full"
         >
-            <Image
-                src={icon}
-                width={74}
-                height={74}
-                alt={name}
-                className="self-center"
-            />
-            <div className="flex-1 flex flex-col gap-1 w-56 h-full items-start justify-between">
+            <div className={gradeStyle.style}>
+                <Image
+                    src={icon}
+                    width={74}
+                    height={74}
+                    alt={name}
+                    className="rounded-lg w-16 h-16"
+                />
+            </div>
+            <div className="flex-1 flex flex-col gap-1 w-56 h-full items-start">
                 <div className={classNames(`font-bold`)}>
                     <label>{name}</label>
                 </div>
@@ -157,6 +134,7 @@ function Equipment(props: EquipmentProps) {
                                 trailColor="#ffffff"
                                 strokeColor={qualityColor}
                                 className="flex-1"
+                                size="small"
                             />
                         </>
                     )}
@@ -164,7 +142,13 @@ function Equipment(props: EquipmentProps) {
                 <div className="flex gap-1 flex-wrap">
                     {bottomTag?.map((tag) => {
                         return (
-                            <Tag className="font-bold" key={tag}>
+                            <Tag
+                                className="font-bold"
+                                key={tag}
+                                color={
+                                    tag.includes("감소") ? "error" : "default"
+                                }
+                            >
                                 <span>{tag}</span>
                             </Tag>
                         );
@@ -186,8 +170,8 @@ export default function EquipmentCard(props: EquipmentCardProps) {
     const [braceletList, setBraceletList] = useState<Bracelet[]>([]);
 
     useEffect(() => {
-        setArmorList(
-            equipments
+        setArmorList((_) => {
+            const list = equipments
                 .filter((equipment) => isArmor(equipment.Type))
                 .map((equipment) => {
                     const toolTip = parseArmorToolTip(equipment.Tooltip);
@@ -201,8 +185,18 @@ export default function EquipmentCard(props: EquipmentCardProps) {
                         qualityValue: toolTip.qualityValue,
                         armorSet: toolTip.armorSet ?? undefined,
                     };
-                })
-        );
+                });
+
+            // 무기를 가장 마지마지에 둔다.
+            const weaponIndex = list.findIndex(
+                (equipment) => equipment.type === "무기"
+            );
+            const weapon = list.splice(weaponIndex, 1)[0];
+            list.push(weapon);
+
+            return list;
+        });
+
         setAccessoryList(
             equipments
                 .filter((equipment) => isAccessory(equipment.Type))

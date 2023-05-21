@@ -1,0 +1,68 @@
+.grade__icon--1 {
+    img {
+        background-image: linear-gradient(to bottom right, #3d3325, #8df901);
+    }
+    label {
+        @apply text-itemGrade1;
+    }
+}
+
+.grade__icon--2 {
+    img {
+        background-image: linear-gradient(to bottom right, #3d3325, #00b0fa);
+    }
+
+    label {
+        @apply text-itemGrade2;
+    }
+}
+
+.grade__icon--3 {
+    img {
+        background-image: linear-gradient(to bottom right, #3d3325, #ba00f9);
+    }
+
+    label {
+        @apply text-itemGrade3;
+    }
+}
+
+.grade__icon--4 {
+    img {
+        background-image: linear-gradient(to bottom right, #3d3325, #f9a100);
+    }
+
+    label {
+        @apply text-itemGrade4;
+    }
+}
+
+.grade__icon--5 {
+    img {
+        background-image: linear-gradient(to bottom right, #3d3325, #fa5d00);
+    }
+
+    label {
+        @apply text-itemGrade5;
+    }
+}
+
+.grade__icon--6 {
+    img {
+        background-image: linear-gradient(to bottom right, #3d3325, #ddc29d);
+    }
+
+    label {
+        @apply text-itemGrade6;
+    }
+}
+
+.grade__icon--7 {
+    img {
+        background-image: linear-gradient(to bottom right, #3d3325, #3cf2e6);
+    }
+
+    label {
+        @apply text-itemGrade7;
+    }
+}

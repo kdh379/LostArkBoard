@@ -5,8 +5,25 @@ import Image from "next/image";
 import style from "./_character.module.scss";
 import { useRecoilValue } from "recoil";
 import { profileAtom } from "./character.atom";
+import { useEffect, useState } from "react";
+
+const DEFAULT_PROFILE_IMAGE: { [key: string]: string } = {
+    마법사: "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/magician.png",
+    ["무도가(여)"]:
+        "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/fighter.png",
+    ["무도가(남)"]: "",
+    ["전사(남)"]:
+        "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/warrior.png",
+    스페셜리스트:
+        "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/specialist.png",
+    ["헌터(남)"]:
+        "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/hunter.png",
+    암살자: "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/delain.png",
+};
 
 export function Profile() {
+    const [defaultProfileImage, setDefaultProfileImage] = useState<string>("");
+
     const {
         CharacterClassName,
         CharacterImage,
@@ -34,6 +51,10 @@ export function Profile() {
         { name: "길드", value: GuildName },
         { name: "영지", value: `Lv.${TownLevel} ${TownName}` },
     ];
+
+    useEffect(() => {
+        setDefaultProfileImage(DEFAULT_PROFILE_IMAGE[CharacterClassName]);
+    }, [CharacterClassName]);
 
     // Image 확대
     return (
@@ -69,7 +90,7 @@ export function Profile() {
                 {CharacterImage !== "" && (
                     <Image
                         className="object-cover object-top"
-                        src={CharacterImage}
+                        src={CharacterImage ?? defaultProfileImage}
                         alt={CharacterName}
                         width={600}
                         height={600}
