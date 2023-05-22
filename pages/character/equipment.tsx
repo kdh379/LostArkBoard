@@ -95,7 +95,7 @@ function Equipment(props: EquipmentProps) {
     return (
         <div
             key={name}
-            className="xl:h-[83px] min-w-[300px] flex gap-x-3 items-center my-1 w-full"
+            className="xl:h-[83px] min-w-[250px] flex gap-x-3 items-center my-3 w-full"
         >
             <div className={gradeStyle.style}>
                 <Image
@@ -106,11 +106,11 @@ function Equipment(props: EquipmentProps) {
                     className="rounded-lg w-16 h-16"
                 />
             </div>
-            <div className="flex-1 flex flex-col gap-1 w-56 h-full items-start">
+            <div className="flex-1 flex flex-col gap-1 h-full items-start">
                 <div className={classNames(`font-bold`)}>
                     <label>{name}</label>
                 </div>
-                <div className="flex items-center gap-y-1 flex-wrap w-full">
+                <div className="flex items-center  gap-y-1 w-full">
                     {middleTag?.map((tag) => {
                         return (
                             <Tag className="font-bold" key={tag}>
@@ -119,7 +119,7 @@ function Equipment(props: EquipmentProps) {
                         );
                     })}
                     {qualityValue && qualityValue >= 0 && (
-                        <>
+                        <div className="w-full flex items-center">
                             <span
                                 className="font-bold pr-2"
                                 style={{
@@ -133,13 +133,13 @@ function Equipment(props: EquipmentProps) {
                                 showInfo={false}
                                 trailColor="#ffffff"
                                 strokeColor={qualityColor}
-                                className="flex-1"
+                                className=""
                                 size="small"
                             />
-                        </>
+                        </div>
                     )}
                 </div>
-                <div className="flex gap-1 flex-wrap">
+                <div className="flex gap-1 xl:flex-nowrap flex-wrap">
                     {bottomTag?.map((tag) => {
                         return (
                             <Tag

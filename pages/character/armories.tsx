@@ -6,6 +6,7 @@ import { convertEngraving } from "utils/script/engraving-converter";
 import EquipmentCard from "./equipment";
 import ArmoryGem from "./armory-gem";
 import Image from "next/image";
+import ArmoryCard from "./armory-card";
 
 const CARD_PADDING = {
     paddingTop: "0.8rem",
@@ -128,6 +129,7 @@ export function Armories() {
             </div>
             <EquipmentCard className="sm:col-span-3 col-span-2" />
             <ArmoryGem className="sm:col-span-3 sm:col-start-2 col-span-2" />
+            <ArmoryCard className="sm:col-span-3 sm:col-start-2 col-span-2" />
         </div>
     );
 }

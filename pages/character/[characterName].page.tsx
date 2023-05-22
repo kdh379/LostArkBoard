@@ -7,6 +7,7 @@ import { useEffect } from "react";
 
 import {
     avatarAtom,
+    cardsAtom,
     engravingAtom,
     equipmentAtom,
     gemsAtom,
@@ -30,6 +31,7 @@ export default function CharacterPage() {
     const setSkills = useSetRecoilState(skillsAtom);
     const setEngraving = useSetRecoilState(engravingAtom);
     const setGems = useSetRecoilState(gemsAtom);
+    const setCards = useSetRecoilState(cardsAtom);
 
     useEffect(() => {
         if (!response?.data) return;
@@ -45,6 +47,7 @@ export default function CharacterPage() {
             }
         );
         response.data.ArmoryGem && setGems(response.data.ArmoryGem);
+        response.data.ArmoryCard && setCards(response.data.ArmoryCard);
     }, [
         response,
         setProfile,
@@ -53,6 +56,7 @@ export default function CharacterPage() {
         setSkills,
         setEngraving,
         setGems,
+        setCards,
     ]);
 
     if (isLoading) {

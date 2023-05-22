@@ -54,3 +54,11 @@ export const gemsAtom = atom<ArmoryGemEntity>({
         Effects: [],
     },
 });
+
+export const cardsAtom = atom<ArmoryCardEntity>({
+    key: "cards",
+    default: {
+        Cards: [],
+        Effects: [],
+    },
+});

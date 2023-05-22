@@ -58,7 +58,7 @@ export function Profile() {
 
     // Image 확대
     return (
-        <div className="flex relative h-72 overflow-x-clip bg-background">
+        <div className="flex relative overflow-x-clip bg-background">
             <div className="flex flex-col gap-3 z-20 my-2">
                 <div className="flex">
                     {HEADER_INFO_LIST.map((info, index) => (
@@ -80,7 +80,9 @@ export function Profile() {
                 <div className="flex flex-col gap-2 mt-auto">
                     {EXTRA_INFO_LIST.map((info, index) => (
                         <div className="flex items-center text-sm" key={index}>
-                            <Tag className="w-14 text-center">{info.name}</Tag>
+                            <Tag className="xl:w-14 w-20 text-center">
+                                {info.name}
+                            </Tag>
                             <span className="opacity-50">{info.value}</span>
                         </div>
                     ))}
@@ -89,7 +91,7 @@ export function Profile() {
             <div className={style["character-image"]}>
                 {CharacterImage !== "" && (
                     <Image
-                        className="object-cover object-top"
+                        className="object-cover object-top absolute"
                         src={CharacterImage ?? defaultProfileImage}
                         alt={CharacterName}
                         width={600}

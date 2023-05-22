@@ -225,7 +225,7 @@ export const parseBraceletToolTip = (obj) => {
         if (match) {
             stat.value = match[1];
         } else {
-            stat.value = stat.description.match(/(\d+(\.\d+)?)%/)[0] ?? "";
+            stat.value = stat.description.match(/(\d+(\.\d+)?)%/)?.[0] ?? "";
         }
     });
 

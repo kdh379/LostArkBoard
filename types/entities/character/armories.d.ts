@@ -5,4 +5,5 @@ interface ArmoriesEntity {
     ArmorySkills: ArmorySkillsEntity[];
     ArmoryEngraving: ArmoryEngravingEntity;
     ArmoryGem: ArmoryGemEntity;
+    ArmoryCard: ArmoryCardEntity;
 }
