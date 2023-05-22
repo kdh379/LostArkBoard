@@ -95,7 +95,7 @@ function Equipment(props: EquipmentProps) {
     return (
         <div
             key={name}
-            className="xl:h-[83px] min-w-[250px] flex gap-x-3 items-center my-3 w-full"
+            className="xl:h-[72px] min-w-[360px] max-w-[400px] flex gap-x-3 items-center my-3 w-full"
         >
             <div className={gradeStyle.style}>
                 <Image
@@ -103,7 +103,7 @@ function Equipment(props: EquipmentProps) {
                     width={74}
                     height={74}
                     alt={name}
-                    className="rounded-lg w-16 h-16"
+                    className="rounded-lg w-16 h-16 min-w-max"
                 />
             </div>
             <div className="flex-1 flex flex-col gap-1 h-full items-start">
