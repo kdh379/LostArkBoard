@@ -95,7 +95,7 @@ function Equipment(props: EquipmentProps) {
     return (
         <div
             key={name}
-            className="xl:h-[72px] min-w-[360px] max-w-[400px] flex gap-x-3 items-center my-3 w-full"
+            className="sm:h-[72px] min-w-[360px] max-w-[400px] flex gap-x-3 items-center w-full"
         >
             <div className={gradeStyle.style}>
                 <Image
@@ -110,7 +110,11 @@ function Equipment(props: EquipmentProps) {
                 <div className={classNames(`font-bold`)}>
                     <label>{name}</label>
                 </div>
-                <div className="flex items-center  gap-y-1 w-full">
+                <div
+                    className={classNames(`flex items-center gap-y-1 w-full`, {
+                        hidden: middleTag?.length === 0 && qualityValue < 0,
+                    })}
+                >
                     {middleTag?.map((tag) => {
                         return (
                             <Tag className="font-bold" key={tag}>
@@ -234,7 +238,7 @@ export default function EquipmentCard(props: EquipmentCardProps) {
     return (
         <Card className={props.className} bodyStyle={CARD_PADDING}>
             <div className="flex flex-wrap items-start gap-5">
-                <div className="flex-1">
+                <div className="flex-1 flex flex-col gap-3">
                     {armorList.map((armor) => (
                         <Equipment
                             key={armor.name}
@@ -255,7 +259,7 @@ export default function EquipmentCard(props: EquipmentCardProps) {
                         />
                     ))}
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 flex flex-col gap-3">
                     {accessoryList.map((accessory) => (
                         <Equipment
                             key={accessory.name}
