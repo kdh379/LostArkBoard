@@ -134,6 +134,7 @@ export default function ArmoryGem(props: ArmoryGemProps) {
                             <Gem key={index} {...gem} />
                         ))}
                 </div>
+                <div className="border border-active sm:block hidden"></div>
                 <div className="flex flex-wrap gap-4">
                     {gemList
                         .filter((gem) => gem.type === "홍염")
