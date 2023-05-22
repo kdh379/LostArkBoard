@@ -163,9 +163,9 @@ export default function ArmoryCard(props: ArmoryCardProps) {
 
     return (
         <Card className={props.className} bodyStyle={CARD_PADDING}>
-            <div className="flex justify-between pb-3">
-                <div className="flex items-center gap-3">
-                    <span className="strong--5">카드</span>
+            <div className="flex items-center gap-3 pb-3">
+                <span className="strong--5 min-w-max">카드</span>
+                <div className="flex flex-wrap gap-2">
                     {cardAwake?.map((card) => (
                         <Tag
                             key={card.name}
