@@ -10,23 +10,25 @@ interface ArmoryGemProps {
     className?: string;
 }
 
-declare type GemType = "멸화" | "홍염";
+export declare type GemType = "멸화" | "홍염";
 
-interface Gem {
+export interface GemProps {
     icon: string;
     grade: string;
     type: GemType;
     level: number;
     effects: GemEffect;
+
+    displayBottom?: boolean;
 }
 
-declare type GemEffect = {
+export declare type GemEffect = {
     name: string;
     value: string;
     icon: string;
 };
 
-function GemPopover(props: GemEffect) {
+export function GemPopover(props: GemEffect) {
     const { name, value, icon } = props;
 
     return (
@@ -48,8 +50,8 @@ function GemPopover(props: GemEffect) {
     );
 }
 
-function Gem(props: Gem) {
-    const { icon, grade, type, level, effects } = props;
+export function Gem(props: GemProps) {
+    const { icon, grade, type, level, effects, displayBottom = true } = props;
 
     const color = useGradeColor(grade);
 
@@ -60,7 +62,7 @@ function Gem(props: Gem) {
                 overlayInnerStyle={{ backgroundColor: "#2e3338" }}
                 content={<GemPopover {...effects} />}
             >
-                <div className={`w-12 h-12 ${color.style}`}>
+                <div className={`w-12 h-12 ${color.style} relative`}>
                     <Image
                         alt={`${grade} ${type} ${level}`}
                         src={icon}
@@ -68,12 +70,17 @@ function Gem(props: Gem) {
                         height={64}
                         className="rounded-lg cursor-pointer"
                     />
+                    <div className="absolute bottom-0 -right-2">
+                        <Tag color={color.color}>{level}</Tag>
+                    </div>
                 </div>
             </Popover>
-            <Tag className="mx-auto">
-                {level}
-                {type}
-            </Tag>
+            {displayBottom && (
+                <Tag className="mx-auto">
+                    {level}
+                    {type}
+                </Tag>
+            )}
         </div>
     );
 }
@@ -81,7 +88,7 @@ function Gem(props: Gem) {
 export default function ArmoryGem(props: ArmoryGemProps) {
     const { Gems, Effects } = useRecoilValue(gemsAtom);
 
-    const [gemList, setGemList] = useState<Gem[]>([]);
+    const [gemList, setGemList] = useState<GemProps[]>([]);
 
     useEffect(() => {
         setGemList((_) => {

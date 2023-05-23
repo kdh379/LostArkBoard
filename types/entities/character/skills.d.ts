@@ -1,4 +1,4 @@
-declare type ArmorySkillsEntity = {
+declare type ArmorySkillEntity = {
     Name: string;
     Icon: string;
     Level: number;

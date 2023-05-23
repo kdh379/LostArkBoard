@@ -42,7 +42,7 @@ export const equipmentAtom = atom<ArmoryEquipmentEntity[]>({
     default: [],
 });
 
-export const skillsAtom = atom<ArmorySkillsEntity[]>({
+export const skillsAtom = atom<ArmorySkillEntity[]>({
     key: "skills",
     default: [],
 });

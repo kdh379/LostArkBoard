@@ -16,6 +16,7 @@ import {
 } from "./character.atom";
 import { Helmet } from "@components/helmet";
 import { useArmories } from "hooks/queries/armories";
+import Skills from "./skill";
 
 export default function CharacterPage() {
     const router = useRouter();
@@ -96,7 +97,7 @@ export default function CharacterPage() {
                         {
                             label: <span className="font-bold">스킬</span>,
                             key: "2",
-                            children: <div>스킬</div>,
+                            children: <Skills />,
                         },
                         {
                             label: <span className="font-bold">내실</span>,

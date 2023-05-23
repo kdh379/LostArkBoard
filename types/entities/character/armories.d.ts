@@ -2,7 +2,7 @@ interface ArmoriesEntity {
     ArmoryProfile: ProfilesEntity;
     ArmoryEquipment: ArmoryEquipmentEntity[] | null;
     ArmoryAvatars: ArmoryAvatarsEntity[];
-    ArmorySkills: ArmorySkillsEntity[];
+    ArmorySkills: ArmorySkillEntity[];
     ArmoryEngraving: ArmoryEngravingEntity;
     ArmoryGem: ArmoryGemEntity;
     ArmoryCard: ArmoryCardEntity;
