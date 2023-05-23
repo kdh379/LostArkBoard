@@ -81,7 +81,7 @@ function CombatStats() {
     if (!Stats) return null;
 
     return (
-        <Card className="flex-1 sm:flex-none" bodyStyle={CARD_PADDING}>
+        <Card className="flex-1 lg:flex-none" bodyStyle={CARD_PADDING}>
             <div className="flex flex-col gap-3">
                 <div className="flex gap-3 justify-between">
                     {getUsefulStats(Stats).map((stat) => (
@@ -123,13 +123,13 @@ function CombatStats() {
 export function Armories() {
     return (
         <div className="grid lg:grid-cols-4 grid-cols-2 gap-3">
-            <div className="flex sm:flex-col w-full sm:col-span-1 col-span-2 gap-3 min-w-[12rem]">
+            <div className="flex lg:flex-col w-full lg:col-span-1 col-span-2 gap-3 min-w-[12rem]">
                 <CombatStats />
                 <Engraving />
             </div>
-            <EquipmentCard className="sm:col-span-3 col-span-2" />
-            <ArmoryGem className="sm:col-span-3 sm:col-start-2 col-span-2" />
-            <ArmoryCard className="sm:col-span-3 sm:col-start-2 col-span-2" />
+            <EquipmentCard className="lg:col-span-3 col-span-2" />
+            <ArmoryGem className="lg:col-span-3 lg:col-start-2 col-span-2" />
+            <ArmoryCard className="lg:col-span-3 lg:col-start-2 col-span-2" />
         </div>
     );
 }

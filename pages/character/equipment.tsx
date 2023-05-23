@@ -93,15 +93,12 @@ function Equipment(props: EquipmentProps) {
     const gradeStyle = useGradeColor(grade);
 
     return (
-        <div
-            key={name}
-            className="sm:h-[72px] min-w-[360px] max-w-[400px] flex gap-x-3 items-center w-full"
-        >
+        <div key={name} className={style.equipment}>
             <div className={gradeStyle.style}>
                 <Image
                     src={icon}
-                    width={74}
-                    height={74}
+                    width={60}
+                    height={60}
                     alt={name}
                     className="rounded-lg w-16 h-16 min-w-max"
                 />
@@ -117,7 +114,7 @@ function Equipment(props: EquipmentProps) {
                 >
                     {middleTag?.map((tag) => {
                         return (
-                            <Tag className="font-bold" key={tag}>
+                            <Tag className="font-bold px-1 mr-1" key={tag}>
                                 {tag}
                             </Tag>
                         );
@@ -143,11 +140,11 @@ function Equipment(props: EquipmentProps) {
                         </div>
                     )}
                 </div>
-                <div className="flex gap-1 xl:flex-nowrap flex-wrap">
+                <div className="flex gap-y-1">
                     {bottomTag?.map((tag) => {
                         return (
                             <Tag
-                                className="font-bold"
+                                className="font-bold px-1 mr-1"
                                 key={tag}
                                 color={
                                     tag.includes("감소") ? "error" : "default"
@@ -237,8 +234,8 @@ export default function EquipmentCard(props: EquipmentCardProps) {
     }, [equipments]);
     return (
         <Card className={props.className} bodyStyle={CARD_PADDING}>
-            <div className="flex flex-wrap items-start gap-5">
-                <div className="flex-1 flex flex-col gap-3">
+            <div className="flex md:flex-row flex-col items-start gap-3">
+                <div className={style.equipment__wrapper}>
                     {armorList.map((armor) => (
                         <Equipment
                             key={armor.name}
@@ -259,7 +256,7 @@ export default function EquipmentCard(props: EquipmentCardProps) {
                         />
                     ))}
                 </div>
-                <div className="flex-1 flex flex-col gap-3">
+                <div className={style.equipment__wrapper}>
                     {accessoryList.map((accessory) => (
                         <Equipment
                             key={accessory.name}
