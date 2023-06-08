@@ -122,14 +122,14 @@ function CombatStats() {
 
 export function Armories() {
     return (
-        <div className="grid lg:grid-cols-4 grid-cols-2 gap-3">
+        <div className="grid lg:grid-cols-5 grid-cols-2 gap-3">
             <div className="flex lg:flex-col w-full lg:col-span-1 col-span-2 gap-3 min-w-[12rem]">
                 <CombatStats />
                 <Engraving />
             </div>
-            <EquipmentCard className="lg:col-span-3 col-span-2" />
-            <ArmoryGem className="lg:col-span-3 lg:col-start-2 col-span-2" />
-            <ArmoryCard className="lg:col-span-3 lg:col-start-2 col-span-2" />
+            <EquipmentCard className="lg:col-span-4 col-span-2" />
+            <ArmoryGem className="lg:col-span-4 lg:col-start-2 col-span-2" />
+            <ArmoryCard className="lg:col-span-4 lg:col-start-2 col-span-2" />
         </div>
     );
 }

@@ -20,10 +20,11 @@ const ContentsCalendarItem = (props: ClosestContentsListType) => {
             style={{
                 paddingLeft: 12,
                 paddingRight: 0,
-                paddingTop: 4,
+                paddingTop: 0,
                 paddingBottom: 0,
                 border: "none",
             }}
+            className="mt-2"
             key={ContentsName}
         >
             <List.Item.Meta
@@ -57,7 +58,7 @@ const ContentsCalendarTitle = (props: ClosestEventType) => {
         <List
             header={
                 <div
-                    className={classNames("flex justify-between strong--5", {
+                    className={classNames("flex justify-between font-bold", {
                         "opacity-50": isClosed,
                     })}
                 >
@@ -65,18 +66,13 @@ const ContentsCalendarTitle = (props: ClosestEventType) => {
                     <div>{timeFormat(new Date(StartTime))}</div>
                 </div>
             }
-            size="small"
             dataSource={ContentsList}
             renderItem={(item) =>
                 ContentsList.length > 1 && (
                     <ContentsCalendarItem key={item.ContentsName} {...item} />
                 )
             }
-        >
-            {/* {ContentsList.length > 1 && (
-                <ContentsCalendarItem contentList={ContentsList} />
-            )} */}
-        </List>
+        />
     );
 };
 

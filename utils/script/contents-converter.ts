@@ -80,7 +80,7 @@ export const getClosestEvent = (
             let minDiff = Infinity;
             let closestDateTime = "";
 
-            content.StartTimes.forEach((dateTime) => {
+            content.StartTimes?.forEach((dateTime) => {
                 // dateTime이 targetDate 날짜와 다를 경우 return
                 if (new Date(dateTime).getDate() !== targetDate.getDate())
                     return;
