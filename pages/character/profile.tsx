@@ -49,7 +49,7 @@ export function Profile() {
         { name: "원정대", value: `Lv.${ExpeditionLevel}` },
         { name: "PVP", value: PvpGradeName },
         { name: "길드", value: GuildName },
-        { name: "영지", value: `Lv.${TownLevel} ${TownName}` },
+        { name: "영지", value: `Lv.${TownLevel ?? "0"} ${TownName}` },
     ];
 
     useEffect(() => {

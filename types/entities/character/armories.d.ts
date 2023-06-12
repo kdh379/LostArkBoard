@@ -6,4 +6,5 @@ interface ArmoriesEntity {
     ArmoryEngraving: ArmoryEngravingEntity;
     ArmoryGem: ArmoryGemEntity;
     ArmoryCard: ArmoryCardEntity;
+    Collectibles: CollectiblesEntity[];
 }

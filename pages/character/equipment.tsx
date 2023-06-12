@@ -171,6 +171,8 @@ export default function EquipmentCard(props: EquipmentCardProps) {
     const [braceletList, setBraceletList] = useState<Bracelet[]>([]);
 
     useEffect(() => {
+        if (equipments.length === 0) return;
+
         setArmorList((_) => {
             const list = equipments
                 .filter((equipment) => isArmor(equipment.Type))
@@ -232,6 +234,7 @@ export default function EquipmentCard(props: EquipmentCardProps) {
                 })
         );
     }, [equipments]);
+
     return (
         <Card className={props.className} bodyStyle={CARD_PADDING}>
             <div className="flex md:flex-row flex-col items-start gap-3">

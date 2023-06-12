@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import {
     avatarAtom,
     cardsAtom,
+    collectiblesAtom,
     engravingAtom,
     equipmentAtom,
     gemsAtom,
@@ -17,6 +18,7 @@ import {
 import { Helmet } from "@components/helmet";
 import { useArmories } from "hooks/queries/armories";
 import Skills from "./skill";
+import Collectibles from "./collectibles";
 
 export default function CharacterPage() {
     const router = useRouter();
@@ -33,6 +35,7 @@ export default function CharacterPage() {
     const setEngraving = useSetRecoilState(engravingAtom);
     const setGems = useSetRecoilState(gemsAtom);
     const setCards = useSetRecoilState(cardsAtom);
+    const setCollectibles = useSetRecoilState(collectiblesAtom);
 
     useEffect(() => {
         if (!response?.data) return;
@@ -49,6 +52,8 @@ export default function CharacterPage() {
         );
         response.data.ArmoryGem && setGems(response.data.ArmoryGem);
         response.data.ArmoryCard && setCards(response.data.ArmoryCard);
+        response.data.Collectibles &&
+            setCollectibles(response.data.Collectibles);
     }, [
         response,
         setProfile,
@@ -58,6 +63,7 @@ export default function CharacterPage() {
         setEngraving,
         setGems,
         setCards,
+        setCollectibles,
     ]);
 
     if (isLoading) {
@@ -102,7 +108,7 @@ export default function CharacterPage() {
                         {
                             label: <span className="font-bold">내실</span>,
                             key: "3",
-                            children: <div>내실</div>,
+                            children: <Collectibles />,
                         },
                         {
                             label: <span className="font-bold">PVP</span>,

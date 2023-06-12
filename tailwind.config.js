@@ -21,7 +21,7 @@ module.exports = {
                     DEFAULT: "#1e2328",
                 },
                 active: {
-                    DEFAULT: "#2e3338",
+                    DEFAULT: "#2a2f35",
                 },
                 itemGrade1: {
                     DEFAULT: "#8df901",

@@ -62,3 +62,8 @@ export const cardsAtom = atom<ArmoryCardEntity>({
         Effects: [],
     },
 });
+
+export const collectiblesAtom = atom<CollectiblesEntity[]>({
+    key: "collectibles",
+    default: [],
+});
