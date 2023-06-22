@@ -24,7 +24,7 @@ export default function CharacterPage() {
     const router = useRouter();
     const { characterName } = router.query;
 
-    const { data: response, isLoading } = useArmories({
+    const { data, isLoading } = useArmories({
         characterName: characterName as string,
     });
 
@@ -38,24 +38,23 @@ export default function CharacterPage() {
     const setCollectibles = useSetRecoilState(collectiblesAtom);
 
     useEffect(() => {
-        if (!response?.data) return;
+        if (!data) return;
 
-        setProfile(response.data.ArmoryProfile);
-        setEquipment(response.data.ArmoryEquipment ?? []);
-        response.data.ArmoryAvatars && setAvatars(response.data.ArmoryAvatars);
-        response.data.ArmorySkills && setSkills(response.data.ArmorySkills);
+        setProfile(data.ArmoryProfile);
+        setEquipment(data.ArmoryEquipment ?? []);
+        data.ArmoryAvatars && setAvatars(data.ArmoryAvatars);
+        data.ArmorySkills && setSkills(data.ArmorySkills);
         setEngraving(
-            response.data.ArmoryEngraving ?? {
+            data.ArmoryEngraving ?? {
                 Engravings: [],
                 Effects: [],
             }
         );
-        response.data.ArmoryGem && setGems(response.data.ArmoryGem);
-        response.data.ArmoryCard && setCards(response.data.ArmoryCard);
-        response.data.Collectibles &&
-            setCollectibles(response.data.Collectibles);
+        data.ArmoryGem && setGems(data.ArmoryGem);
+        data.ArmoryCard && setCards(data.ArmoryCard);
+        data.Collectibles && setCollectibles(data.Collectibles);
     }, [
-        response,
+        data,
         setProfile,
         setEquipment,
         setAvatars,
@@ -75,7 +74,7 @@ export default function CharacterPage() {
         );
     }
 
-    if (!response?.data) {
+    if (!data) {
         return (
             <div className="flex flex-col pt-40 items-center">
                 <Empty description />

@@ -82,18 +82,15 @@ export const ContentsCalendar = () => {
     // >([]);
     const [targetDate, setTargetDate] = useState(new Date());
     const [closestEvent, setClosestEvent] = useState<ClosestEventType[]>([]);
-    const { data: response, isLoading } = useGameContentsCalendar();
+    const { data, isLoading } = useGameContentsCalendar();
 
     useEffect(() => {
-        if (!response || !response.data) return;
+        if (!data) return;
 
-        const events = getClosestEvent(
-            convertContents(response.data),
-            targetDate
-        );
+        const events = getClosestEvent(convertContents(data), targetDate);
 
         setClosestEvent(events);
-    }, [response, targetDate]);
+    }, [data, targetDate]);
 
     const handlerPrevDate = () => {
         const prevDate = new Date(targetDate);
@@ -139,7 +136,7 @@ export const ContentsCalendar = () => {
                     paddingTop: 0,
                 }}
             >
-                {response &&
+                {data &&
                     closestEvent.map((event) => (
                         <ContentsCalendarTitle
                             key={`${event.CategoryName} + ${event.StartTime}`}

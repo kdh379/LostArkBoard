@@ -70,7 +70,7 @@ const NoticesList = ({ entities }: NoticesListProps) => {
 export const Notices = () => {
     const [notices, setNotices] = useState<NoticeEntity[]>([]);
 
-    const { data: response, isLoading } = useNewsNotices();
+    const { data, isLoading } = useNewsNotices();
 
     const handlerRedirectNoticeList = () => {
         window.open(
@@ -80,16 +80,16 @@ export const Notices = () => {
     };
 
     useEffect(() => {
-        if (!response || !response.data) return;
+        if (!data || !data) return;
 
-        if (response) {
-            setNotices(response.data.splice(0, 5));
+        if (data) {
+            setNotices(data.splice(0, 5));
         }
-    }, [response]);
+    }, [data]);
 
-    if (isLoading && !response) return <Loading />;
+    if (isLoading && !data) return <Loading />;
 
-    if (!response?.data) throw new Error("response is null");
+    if (!data) throw new Error("response is null");
 
     return (
         <div className="flex-1 px-3 py-2">
@@ -112,7 +112,7 @@ export const Notices = () => {
                 }
                 bodyStyle={{ padding: 0 }}
             >
-                {response.data && <NoticesList entities={notices} />}
+                {data && <NoticesList entities={notices} />}
             </Card>
         </div>
     );

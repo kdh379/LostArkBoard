@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getArmories } from "utils/api/armories";
-import { getAPIInfo } from "utils/api/path";
+import { request } from "@utils/api/request";
 
 interface ArmoriesArgs {
     characterName: string;
@@ -8,11 +7,11 @@ interface ArmoriesArgs {
 
 export function useArmories(args: ArmoriesArgs) {
     return useQuery({
-        queryKey: [
-            getAPIInfo("character.armories", {
-                characterName: args.characterName,
+        queryKey: ["character.armories", args.characterName],
+        queryFn: () =>
+            request({
+                key: "character.armories",
+                params: args,
             }),
-        ],
-        queryFn: () => getArmories(args.characterName),
     });
 }

@@ -4,7 +4,7 @@ import { useNewsEvents } from "hooks/queries/news";
 import Image from "next/image";
 
 export function EventsCarousel() {
-    const { data: response, isLoading } = useNewsEvents();
+    const { data, isLoading } = useNewsEvents();
 
     const handlerRedirect = (link: string) => {
         window.open(link, "_blank");
@@ -16,7 +16,7 @@ export function EventsCarousel() {
 
     return (
         <Carousel className="px-3 py-2" autoplay>
-            {response?.data?.map((item) => (
+            {data?.map((item) => (
                 <div
                     key={item.Title}
                     onClick={() => handlerRedirect(item.Link)}

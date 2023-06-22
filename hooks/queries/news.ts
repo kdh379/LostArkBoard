@@ -1,17 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { getNotices2, getEvents2 } from "utils/api/news";
-import { getAPIInfo } from "utils/api/path";
+import { request } from "@utils/api/request";
 
 export function useNewsEvents() {
     return useQuery({
-        queryKey: [getAPIInfo("news.events")],
-        queryFn: () => getEvents2(),
+        queryKey: ["news.events"],
+        queryFn: () => request({ key: "news.events" }),
     });
 }
 
 export function useNewsNotices() {
     return useQuery({
-        queryKey: [getAPIInfo("news.notices")],
-        queryFn: () => getNotices2(),
+        queryKey: ["news.notices"],
+        queryFn: () => request({ key: "news.notices" }),
     });
 }
