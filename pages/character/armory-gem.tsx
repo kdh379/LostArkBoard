@@ -70,9 +70,13 @@ export function Gem(props: GemProps) {
                         height={64}
                         className="rounded-lg cursor-pointer"
                     />
-                    <div className="absolute bottom-0 -right-2">
-                        <Tag color={color.color}>{level}</Tag>
-                    </div>
+
+                    <Tag
+                        className={`absolute bottom-0 right-0 m-0 px-1 leading-none text-sm`}
+                        color={color.color}
+                    >
+                        {level}
+                    </Tag>
                 </div>
             </Popover>
             {displayBottom && (

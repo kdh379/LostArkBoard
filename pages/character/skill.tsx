@@ -16,33 +16,6 @@ declare type Skill = {
     tripods: Tripod[];
 };
 
-const SKILL_TABLE_COLUMNS = [
-    {
-        key: "icon",
-        width: 10,
-    },
-    {
-        key: "name",
-        width: 20,
-    },
-    {
-        key: "level",
-        width: 10,
-    },
-    {
-        key: "rune",
-        width: 20,
-    },
-    {
-        key: "gem",
-        width: 20,
-    },
-    {
-        key: "tripod",
-        width: 30,
-    },
-];
-
 function Skill(props: Skill) {
     const { name, level, icon, rune, tripods } = props;
     const armoryGems = useRecoilValue(gemsAtom);
@@ -82,7 +55,7 @@ function Skill(props: Skill) {
 
     return (
         <div className="grid lg:grid-cols-4 grid-cols-1 gap-y-3 items-center border-b border-b-active pb-3">
-            <div className="min-w-[200px] flex gap-2 items-center col-span-1 px-3">
+            <div className="min-w-[200px] flex gap-2 items-center col-span-1 pl-3">
                 <Image
                     src={icon}
                     width={32}
@@ -91,7 +64,7 @@ function Skill(props: Skill) {
                     className="rounded-md w-10 h-10"
                 />
                 <p className="font-bold text-base min-w-max">{name}</p>
-                <p className="font-bold text-base ml-auto mr-3 col-span-1 min-w-max">
+                <p className="font-bold text-base ml-auto col-span-1 min-w-max">
                     {level}레벨
                 </p>
             </div>

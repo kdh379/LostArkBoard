@@ -1,5 +1,5 @@
 import { useRecoilValue } from "recoil";
-import { collectiblesAtom } from "./character.atom";
+import { collectiblesAtom, profileAtom } from "./character.atom";
 import Image from "next/image";
 import { useState } from "react";
 import classNames from "classnames";
@@ -100,37 +100,28 @@ export default function Collectibles() {
         useState<CollectiblesEntity>(collectibles[0] ?? {});
 
     return (
-        <div>
-            <div className="flex">
-                <div className="flex flex-col">
-                    <div>성향</div>
-                    <div>생활스킬</div>
-                </div>
-                <div>장식품</div>
+        <div className="flex sm:flex-row flex-col gap-3">
+            <div className="sm:flex sm:flex-col sm:w-56 grid grid-cols-2 gap-2">
+                {collectibles.map((collectible) => (
+                    <CollectibleTitle
+                        key={collectible.Type}
+                        icon={collectible.Icon}
+                        title={collectible.Type}
+                        point={collectible.Point}
+                        maxPoint={collectible.MaxPoint}
+                        isSelected={
+                            collectible.Type === selectedCollectible.Type
+                        }
+                        onClick={() => setSelectedCollectible(collectible)}
+                    />
+                ))}
             </div>
-            <div className="flex sm:flex-row gap-3">
-                <div className="sm:flex sm:flex-col sm:w-56 grid grid-cols-2 gap-2">
-                    {collectibles.map((collectible) => (
-                        <CollectibleTitle
-                            key={collectible.Type}
-                            icon={collectible.Icon}
-                            title={collectible.Type}
-                            point={collectible.Point}
-                            maxPoint={collectible.MaxPoint}
-                            isSelected={
-                                collectible.Type === selectedCollectible.Type
-                            }
-                            onClick={() => setSelectedCollectible(collectible)}
-                        />
-                    ))}
-                </div>
-                <CollectibleContent
-                    type={selectedCollectible.Type}
-                    point={selectedCollectible.Point}
-                    maxPoint={selectedCollectible.MaxPoint}
-                    collectiblePoints={selectedCollectible.CollectiblePoints}
-                />
-            </div>
+            <CollectibleContent
+                type={selectedCollectible.Type}
+                point={selectedCollectible.Point}
+                maxPoint={selectedCollectible.MaxPoint}
+                collectiblePoints={selectedCollectible.CollectiblePoints}
+            />
         </div>
     );
 }
